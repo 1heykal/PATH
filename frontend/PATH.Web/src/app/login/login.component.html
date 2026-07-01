@@ -1,0 +1,35 @@
+<div class="auth-layout">
+    <div class="auth-card">
+        <h1>Sign in to PATH</h1>
+        <p class="auth-subtitle">Manage your projects and tasks</p>
+
+        <form class="form" method="post" (ngSubmit)="login()">
+            <div class="form-group">
+                <label class="form-label" for="email">Email</label>
+                <input id="email" type="email" placeholder="user@example.com" name="email" [(ngModel)]="accessModel.Email" />
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="password">Password</label>
+                <input type="password" name="password" id="password" placeholder="Enter your password"
+                    [(ngModel)]="accessModel.Password" />
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-block" [disabled]="!isFormValid()">Sign in</button>
+        </form>
+
+        @if(errorMessage(); as errors) {
+        @if(errors.length > 0) {
+        <ul class="alert alert-error">
+            @for (error of errors; track error) {
+            <li>{{ error }}</li>
+            }
+        </ul>
+        }
+        }
+
+        <p class="auth-footer">
+            Don't have an account? <a routerLink="/register">Register</a>
+        </p>
+    </div>
+</div>

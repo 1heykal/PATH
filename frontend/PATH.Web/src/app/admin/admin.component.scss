@@ -1,0 +1,64 @@
+@import '../../styles/variables';
+
+.user-list {
+    list-style: none;
+    background: $color-surface;
+    border: 1px solid $color-border;
+    border-radius: $radius;
+    overflow: hidden;
+}
+
+.user-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: $space-lg;
+    padding: $space-lg;
+    border-bottom: 1px solid $color-border;
+
+    &:last-child {
+        border-bottom: none;
+    }
+}
+
+.user-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+
+    strong {
+        font-size: $text-sm;
+        font-weight: $weight-semibold;
+    }
+}
+
+.user-email {
+    font-size: $text-sm;
+    color: $color-text-muted;
+}
+
+.user-role {
+    display: flex;
+    flex-direction: column;
+    gap: $space-xs;
+    min-width: 160px;
+
+    select {
+        width: auto;
+    }
+}
+
+@media (max-width: $bp-md) {
+    .user-row {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .user-role {
+        width: 100%;
+
+        select {
+            width: 100%;
+        }
+    }
+}

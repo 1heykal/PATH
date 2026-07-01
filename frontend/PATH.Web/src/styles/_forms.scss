@@ -1,0 +1,59 @@
+@import 'variables';
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: $space-lg;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: $space-xs;
+}
+
+.form-label {
+    font-size: $text-sm;
+    font-weight: $weight-medium;
+    color: $color-text;
+}
+
+input,
+textarea,
+select {
+    font-family: inherit;
+    font-size: $text-sm;
+    color: $color-text;
+    background: $color-surface;
+    border: 1px solid $color-border;
+    border-radius: $radius;
+    padding: $space-sm $space-md;
+    width: 100%;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+
+    &::placeholder {
+        color: $color-text-muted;
+    }
+
+    &:focus {
+        outline: none;
+        border-color: $color-accent;
+        box-shadow: 0 0 0 3px $color-accent-light;
+    }
+
+    &:disabled {
+        background: $color-bg;
+        cursor: not-allowed;
+    }
+}
+
+textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+.form-actions {
+    display: flex;
+    gap: $space-sm;
+    margin-top: $space-sm;
+}

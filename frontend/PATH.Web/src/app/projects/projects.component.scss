@@ -1,0 +1,25 @@
+@import '../../styles/variables';
+
+.project-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: $space-lg;
+}
+
+.project-card {
+    h3 {
+        font-size: $text-lg;
+        font-weight: $weight-semibold;
+        margin-bottom: $space-xs;
+        color: $color-text;
+    }
+
+    .description {
+        color: $color-text-muted;
+        font-size: $text-sm;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+}

@@ -1,0 +1,28 @@
+@import 'variables';
+
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: $space-xl;
+    gap: $space-md;
+
+    h2 {
+        font-size: $text-2xl;
+        font-weight: $weight-bold;
+    }
+
+    .subtitle {
+        color: $color-text-muted;
+        margin-top: $space-xs;
+        font-size: $text-sm;
+        font-weight: $weight-normal;
+    }
+}
+
+@media (max-width: $bp-md) {
+    .page-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}

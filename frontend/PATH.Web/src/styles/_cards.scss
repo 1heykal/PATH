@@ -1,0 +1,29 @@
+@import 'variables';
+
+.card {
+    background: $color-surface;
+    border: 1px solid $color-border;
+    border-radius: $radius;
+    padding: $space-lg;
+}
+
+.card-hover {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    transition: border-color 0.15s ease;
+
+    &:hover {
+        border-color: $color-border-strong;
+    }
+}
+
+.card-footer {
+    display: flex;
+    justify-content: space-between;
+    font-size: $text-xs;
+    color: $color-text-muted;
+    padding-top: $space-sm;
+    margin-top: $space-md;
+    border-top: 1px solid $color-border;
+}

@@ -1,0 +1,14 @@
+@import 'variables';
+
+.empty-state {
+    text-align: center;
+    padding: $space-2xl;
+    background: $color-surface;
+    border-radius: $radius;
+    border: 1px dashed $color-border;
+
+    p {
+        color: $color-text-muted;
+        margin-bottom: $space-md;
+    }
+}

@@ -1,0 +1,26 @@
+<div class="page-header">
+    <h2>Projects</h2>
+    <button class="btn btn-primary" (click)="createProject()">+ New Project</button>
+</div>
+
+@if (isLoading()) {
+<app-spinner></app-spinner>
+} @else if (projects().length === 0) {
+<div class="empty-state">
+    <p>No projects yet.</p>
+    <button class="btn btn-primary" (click)="createProject()">Create your first project</button>
+</div>
+} @else {
+<div class="project-grid">
+    @for (project of projects(); track project.id) {
+    <a [routerLink]="['/projects', project.id]" class="project-card card card-hover">
+        <h3>{{ project.name }}</h3>
+        <p class="description">{{ project.description || 'No description' }}</p>
+        <div class="card-footer">
+            <span class="creator">{{ project.creatorName }}</span>
+            <span class="date">{{ project.createdAt | date: 'mediumDate' }}</span>
+        </div>
+    </a>
+    }
+</div>
+}

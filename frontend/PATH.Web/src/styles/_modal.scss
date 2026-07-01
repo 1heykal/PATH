@@ -1,0 +1,38 @@
+@import 'variables';
+
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: $z-modal;
+    padding: $space-md;
+}
+
+.modal {
+    background: $color-surface;
+    padding: $space-xl;
+    border-radius: $radius;
+    border: 1px solid $color-border;
+    display: flex;
+    flex-direction: column;
+    gap: $space-lg;
+    min-width: min(400px, 100%);
+    max-width: 480px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+
+    h3 {
+        font-size: $text-xl;
+        font-weight: $weight-bold;
+    }
+}
+
+@media (max-width: $bp-md) {
+    .modal {
+        min-width: 100%;
+    }
+}

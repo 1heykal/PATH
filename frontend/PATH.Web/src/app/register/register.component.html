@@ -1,0 +1,57 @@
+<div class="auth-layout">
+    <div class="auth-card">
+        <h1>Create your account</h1>
+        <p class="auth-subtitle">Join PATH to start managing projects</p>
+
+        <form class="form" method="post" (ngSubmit)="register()">
+            <div class="form-group">
+                <label class="form-label" for="firstName">First Name</label>
+                <input type="text" [(ngModel)]="registerModel.FirstName" id="firstName" name="FirstName">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="lastName">Last Name</label>
+                <input type="text" [(ngModel)]="registerModel.LastName" id="lastName" name="LastName">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="email">Email</label>
+                <input type="email" name="Email" id="email" placeholder="abc@mail.com" [(ngModel)]="registerModel.Email" />
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="birthDate">Birth Date</label>
+                <input type="date" [(ngModel)]="registerModel.DateOfBirth" id="birthDate" name="DateOfBirth">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="password">Password</label>
+                <input type="password" name="password" id="password" [(ngModel)]="registerModel.Password" />
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="confirmPassword">Confirm Password</label>
+                <input type="password" name="confirmPassword" id="confirmPassword" (change)="checkPasswords()"
+                    [(ngModel)]="registerModel.ConfirmPassword" />
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-block" [disabled]="!isFormValid()">
+                Create account
+            </button>
+        </form>
+
+        @if(errorMessage(); as errors) {
+        @if(errors.length > 0) {
+        <ul class="alert alert-error">
+            @for (error of errors; track error) {
+            <li>{{ error }}</li>
+            }
+        </ul>
+        }
+        }
+
+        <p class="auth-footer">
+            Already have an account? <a routerLink="/login">Sign in</a>
+        </p>
+    </div>
+</div>

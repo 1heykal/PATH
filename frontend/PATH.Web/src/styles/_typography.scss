@@ -1,0 +1,37 @@
+@import 'variables';
+
+h1,
+h2,
+h3,
+h4 {
+    font-weight: $weight-bold;
+    color: $color-text;
+    line-height: 1.25;
+}
+
+h1 {
+    font-size: $text-3xl;
+}
+
+h2 {
+    font-size: $text-2xl;
+}
+
+h3 {
+    font-size: $text-lg;
+}
+
+.text-muted {
+    color: $color-text-muted;
+}
+
+a {
+    color: $color-accent;
+    text-decoration: none;
+    font-weight: $weight-medium;
+
+    &:hover {
+        color: $color-accent-hover;
+        text-decoration: none;
+    }
+}

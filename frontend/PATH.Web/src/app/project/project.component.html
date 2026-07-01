@@ -1,0 +1,88 @@
+@if (isLoading()) {
+<app-spinner></app-spinner>
+} @else {
+@if (project(); as p) {
+<div class="project-detail">
+
+    <div class="page-header">
+        <div>
+            <h2>{{ p.name }}</h2>
+            <p class="subtitle">{{ p.description || 'No description' }}</p>
+        </div>
+        <button class="btn btn-primary" (click)="showCreateTask.set(true)" [disabled]="!userAllowedToCreateTask">
+            + New Task
+        </button>
+    </div>
+
+    <div class="meta">
+        <span>Created by <strong>{{ p.creatorName }}</strong></span>
+        <span>{{ p.createdAt | date: 'mediumDate' }}</span>
+    </div>
+
+    @if (showCreateTask()) {
+    <app-create-task [projectId]="p.id" [members]="p.members" (closed)="showCreateTask.set(false)"
+        (taskCreated)="onTaskCreated()" />
+    }
+
+    <div class="section">
+        <h3>Members</h3>
+        @if (p.members.length > 0) {
+        <div class="members-list">
+            @for (member of p.members; track member.userId) {
+            <span class="member-badge">{{ member.userName }}</span>
+            }
+        </div>
+        } @else {
+        <p class="muted">No members yet.</p>
+        }
+    </div>
+
+    <div class="section">
+        <h3>Tasks</h3>
+        @if (p.tasks.length > 0) {
+        <div class="task-list">
+            @for (task of p.tasks; track task.id) {
+            <div class="task-card card">
+                <div class="task-header">
+                    <strong>{{ task.title }}</strong>
+                    <span class="badge" [class]="'badge-' + task.status.toLowerCase()">
+                        {{ task.status }}
+                    </span>
+                </div>
+                <p class="task-meta">
+                    Priority: <strong>{{ task.priority }}</strong> |
+                    Due: {{ task.dueDate | date: 'mediumDate' }}
+                </p>
+                <div class="task-controls">
+                    <div class="control-group">
+                        <label class="form-label">Status</label>
+                        <select [(ngModel)]="task.status" (change)="updateTaskStatus(task.id, task.status)">
+                            <option value="Todo">Todo</option>
+                            <option value="InProgress">In Progress</option>
+                            <option value="Done">Done</option>
+                        </select>
+                    </div>
+                    <div class="control-group">
+                        <label class="form-label">Assigned to</label>
+                        <select [(ngModel)]="task.assignedToId" (change)="assignTaskToUser(task.id, task.assignedToId)">
+                            @for (member of p.members; track member.userId) {
+                            <option [value]="member.userId">{{ member.userName }}</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+            </div>
+            }
+        </div>
+        } @else {
+        <div class="empty-state">
+            <p>No tasks yet. Create the first one.</p>
+        </div>
+        }
+    </div>
+
+</div>
+} @else {
+<p class="muted">Project not found.</p>
+}
+}

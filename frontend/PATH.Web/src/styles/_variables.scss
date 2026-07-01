@@ -1,0 +1,69 @@
+// Colors — minimal base + bold accent
+$color-bg: #f7f7f5;
+$color-surface: #ffffff;
+$color-text: #0a0a0a;
+$color-text-muted: #737373;
+$color-border: #e5e5e5;
+$color-border-strong: #d4d4d4;
+
+$color-primary: #0a0a0a;
+$color-primary-hover: #262626;
+$color-primary-text: #ffffff;
+
+$color-accent: #2563eb;
+$color-accent-hover: #1d4ed8;
+$color-accent-light: #eff6ff;
+
+$color-success: #16a34a;
+$color-success-bg: #f0fdf4;
+$color-error: #dc2626;
+$color-error-bg: #fef2f2;
+
+// Status badges
+$status-todo-bg: #fef9c3;
+$status-todo-text: #854d0e;
+$status-inprogress-bg: #dbeafe;
+$status-inprogress-text: #1e40af;
+$status-done-bg: #dcfce7;
+$status-done-text: #166534;
+
+// Spacing
+$space-xs: 0.5rem;
+$space-sm: 0.75rem;
+$space-md: 1rem;
+$space-lg: 1.5rem;
+$space-xl: 2rem;
+$space-2xl: 3rem;
+
+// Layout
+$content-max-width: 1120px;
+$nav-height: 56px;
+
+// Typography
+$font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+$text-xs: 0.75rem;
+$text-sm: 0.875rem;
+$text-base: 1rem;
+$text-lg: 1.125rem;
+$text-xl: 1.25rem;
+$text-2xl: 1.5rem;
+$text-3xl: 2rem;
+
+$weight-normal: 400;
+$weight-medium: 500;
+$weight-semibold: 600;
+$weight-bold: 700;
+
+// Radius
+$radius-sm: 6px;
+$radius: 8px;
+$radius-full: 999px;
+
+// Shadows
+$shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
+
+// Z-index
+$z-modal: 1000;
+
+// Breakpoints
+$bp-md: 768px;

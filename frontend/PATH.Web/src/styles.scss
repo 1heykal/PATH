@@ -1,0 +1,31 @@
+@import './styles/variables';
+@import './styles/typography';
+@import './styles/buttons';
+@import './styles/forms';
+@import './styles/alerts';
+@import './styles/cards';
+@import './styles/badges';
+@import './styles/page-header';
+@import './styles/empty-state';
+@import './styles/modal';
+@import './styles/auth-layout';
+@import './styles/utilities';
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: $font-family;
+    font-size: $text-base;
+    background: $color-bg;
+    color: $color-text;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+}
+
+button {
+    font-family: inherit;
+}

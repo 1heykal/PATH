@@ -1,0 +1,35 @@
+@import 'variables';
+
+.badge {
+    display: inline-block;
+    font-size: $text-xs;
+    font-weight: $weight-semibold;
+    padding: 2px $space-sm;
+    border-radius: $radius-full;
+    line-height: 1.4;
+}
+
+.badge-todo {
+    background: $status-todo-bg;
+    color: $status-todo-text;
+}
+
+.badge-inprogress {
+    background: $status-inprogress-bg;
+    color: $status-inprogress-text;
+}
+
+.badge-done {
+    background: $status-done-bg;
+    color: $status-done-text;
+}
+
+.member-badge {
+    background: $color-bg;
+    color: $color-text;
+    border: 1px solid $color-border;
+    padding: $space-xs $space-sm;
+    border-radius: $radius-full;
+    font-size: $text-sm;
+    font-weight: $weight-medium;
+}

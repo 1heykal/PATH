@@ -1,0 +1,137 @@
+@import '../../../styles/variables';
+
+.layout {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: $nav-height;
+    padding: 0 $space-xl;
+    background: $color-surface;
+    border-bottom: 1px solid $color-border;
+    gap: $space-lg;
+}
+
+.logo {
+    font-weight: $weight-bold;
+    font-size: $text-xl;
+    color: $color-text;
+    text-decoration: none;
+    letter-spacing: -0.02em;
+    flex-shrink: 0;
+
+    &:hover {
+        text-decoration: none;
+        color: $color-text;
+    }
+}
+
+.nav-toggle {
+    display: none;
+    flex-direction: column;
+    gap: 4px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: $space-xs;
+
+    span {
+        display: block;
+        width: 20px;
+        height: 2px;
+        background: $color-text;
+        border-radius: 1px;
+    }
+}
+
+.nav-links {
+    display: flex;
+    gap: $space-xs;
+    flex: 1;
+    justify-content: center;
+
+    a {
+        color: $color-text-muted;
+        text-decoration: none;
+        font-weight: $weight-medium;
+        font-size: $text-sm;
+        padding: $space-xs $space-sm;
+        border-radius: $radius-sm;
+        transition: color 0.15s ease, background 0.15s ease;
+
+        &:hover {
+            color: $color-text;
+            text-decoration: none;
+        }
+
+        &.active {
+            color: $color-text;
+            background: $color-bg;
+        }
+    }
+}
+
+.nav-user {
+    display: flex;
+    align-items: center;
+    gap: $space-md;
+    flex-shrink: 0;
+}
+
+.user-name {
+    font-size: $text-sm;
+    font-weight: $weight-medium;
+    color: $color-text-muted;
+}
+
+.content {
+    flex: 1;
+    padding: $space-2xl $space-xl;
+    max-width: $content-max-width;
+    margin: 0 auto;
+    width: 100%;
+}
+
+@media (max-width: $bp-md) {
+    .navbar {
+        flex-wrap: wrap;
+        height: auto;
+        padding: $space-md;
+        gap: $space-sm;
+    }
+
+    .nav-toggle {
+        display: flex;
+        margin-left: auto;
+    }
+
+    .nav-links {
+        display: none;
+        width: 100%;
+        flex-direction: column;
+        order: 3;
+
+        &.open {
+            display: flex;
+        }
+
+        a {
+            padding: $space-sm;
+        }
+    }
+
+    .nav-user {
+        .user-name {
+            display: none;
+        }
+    }
+
+    .content {
+        padding: $space-xl $space-md;
+    }
+}

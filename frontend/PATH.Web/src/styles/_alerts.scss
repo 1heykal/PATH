@@ -1,0 +1,24 @@
+@import 'variables';
+
+.alert {
+    padding: $space-sm $space-md;
+    border-radius: $radius;
+    font-size: $text-sm;
+    list-style: none;
+
+    li + li {
+        margin-top: $space-xs;
+    }
+}
+
+.alert-error {
+    color: $color-error;
+    background: $color-error-bg;
+    border: 1px solid rgba($color-error, 0.2);
+}
+
+.alert-success {
+    color: $color-success;
+    background: $color-success-bg;
+    border: 1px solid rgba($color-success, 0.2);
+}
