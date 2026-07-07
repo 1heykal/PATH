@@ -22,7 +22,12 @@ namespace PATH.Domain.Models
 
         public DateTime CreatedAt { get; set; }
 
-        public ICollection<AddMemberToProjectResponse> Members { get; set; }
+        public Guid OrganizationId { get; set; }
+
+        public OrganizationRole CurrentUserRole { get; set; }
+
+        public ICollection<ProjectMemberBasicInfo> Members
+        { get; set; }
 
         public ICollection<GetTaskItemResponse> Tasks { get; set; }
     }

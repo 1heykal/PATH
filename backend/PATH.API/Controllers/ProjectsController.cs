@@ -5,6 +5,7 @@ using PATH.Domain.Entities;
 using PATH.Domain.Models;
 using PATH.Infrastructure;
 using System.Security.Claims;
+using System.Security.Cryptography;
 
 namespace PATH.API.Controllers
 {
@@ -25,24 +26,24 @@ namespace PATH.API.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<GetProjectByIdDto>> GetProjectById(Guid id)
         {
-            var project = await _projectService.GetProjectById(id);
+            var project = await _projectService.GetProjectById(GetAuthorId(), id);
             return Ok(project);
         }
 
+
         [HttpPost]
-        [Authorize(Roles = "admin,manager")]
+        [Authorize]
         public async Task<ActionResult<GetProjectByIdDto>> AddProject(AddProjectModel model)
         {
-            var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
-            var project = await _projectService.AddProject(userId, model);
+            var project = await _projectService.AddProject(GetAuthorId(), model);
             return CreatedAtAction(nameof(AddProject), new { id = project.Id }, project);
         }
 
         [HttpGet]
         [Authorize]
-        public async Task<ActionResult<List<GetProjectByIdDto>>> GetAllProjects()
+        public async Task<ActionResult<List<GetProjectByIdDto>>> GetAllProjects(Guid orgId)
         {
-            var result = await _projectService.GetAllProjects();
+            var result = await _projectService.GetAllProjects(GetAuthorId(), orgId);
             return Ok(result);
         }
 
@@ -50,25 +51,28 @@ namespace PATH.API.Controllers
         [HttpGet("{id}/tasks")]
         public async Task<ActionResult<List<GetTaskItemResponse>>> GetTasksByProjectId(Guid id)
         {
-            var result = await _taskService.GetTasksByProjectId(id);
+            var result = await _taskService.GetTasksByProjectId(GetAuthorId(), id);
             return Ok(result);
         }
 
         [HttpPost("{id}/members")]
-        [Authorize(Roles = "admin")]
+        [Authorize]
         public async Task<ActionResult<AddMemberToProjectResponse>> AddMemberToProject(Guid id, AddMemberToProjectModel model)
         {
-            var result = await _projectService.AddMemberToProject(id, model);
+            var result = await _projectService.AddMemberToProject(GetAuthorId(), id, model);
             return CreatedAtAction(nameof(AddMemberToProject), new { id = result.ProjectId }, result);
         }
 
         [HttpDelete("{id}")]
-        [Authorize(Roles = "admin")]
+        [Authorize]
         public async Task<ActionResult> DeleteProject(Guid id)
         {
-            await _projectService.DeleteProject(id);
+            await _projectService.DeleteProject(GetAuthorId(), id);
             return NoContent();
         }
+
+        private Guid GetAuthorId() => Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+
     }
 }
 

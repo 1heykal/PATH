@@ -20,89 +20,58 @@ namespace PATH.Infrastructure
             _userService = userService ?? throw new ArgumentNullException(nameof(userService));
         }
 
-        public async Task<GetTaskItemResponse> AddTaskItem(AddTaskModel model)
+        public async Task<GetTaskItemResponse> AddTaskItem(Guid authorId, AddTaskModel model)
         {
-            var project = await _context.Projects.AsNoTracking().Include(p => p.Members).FirstOrDefaultAsync(p => p.Id == model.ProjectId);
-            if (project is null)
-                throw new AppException("Project not found", 404);
+            var authorOrgMembership = await GetOrganizationMembershipByProjectId(authorId, model.ProjectId);
+            var assignedToMembership = await GetProjectMembership(model.AssignedToId, model.ProjectId) ?? throw new AppException("User is not a member of the project.", 404);
+
+
+            if (authorOrgMembership.Role != OrganizationRole.Admin && authorOrgMembership.Role != OrganizationRole.Manager)
+                throw new AppException("User not authorized to perform this action", 403);
 
             var user = await _userService.GetUserById(model.AssignedToId);
             if (user is null)
                 throw new AppException("User not found", 404);
 
-            if (project.Members.All(m => m.UserId != model.AssignedToId))
-                throw new AppException("User is not a member of the project.", 400);
-
-
-
-            var taskItem = new TaskItem
-            {
-                Title = model.Title,
-                Description = model.Description,
-                Status = model.Status,
-                Priority = model.Priority,
-                DueDate = model.DueDate,
-                AssignedToId = model.AssignedToId,
-                ProjectId = model.ProjectId
-            };
+            var taskItem = new TaskItem(model);
 
             await _context.TaskItems.AddAsync(taskItem);
             await _context.SaveChangesAsync();
 
-            return new GetTaskItemResponse
-            {
-                Id = taskItem.Id,
-                Title = taskItem.Title,
-                Description = taskItem.Description,
-                Status = taskItem.Status,
-                Priority = taskItem.Priority,
-                DueDate = taskItem.DueDate,
-                AssignedToId = taskItem.AssignedToId,
-                AssignedToName = $"{user.FirstName} {user.LastName}",
-                CreatedAt = taskItem.CreatedAt,
-                ProjectId = taskItem.ProjectId
-            };
+            return new GetTaskItemResponse(taskItem, $"{user.FirstName} {user.LastName}");
         }
 
-        public async Task AssignTask(Guid id, AssignTaskModel model)
+        public async Task AssignTask(Guid authorId, Guid taskId, AssignTaskModel model)
         {
-            var taskItem = await _context.TaskItems.Include(t => t.Project)
-                .ThenInclude(p => p.Members)
-                .FirstOrDefaultAsync(t => t.Id == id);
-            if (taskItem is null)
-                throw new AppException("Task not found", 404);
+            var authorOrgMembership = await GetOrgMembershipForTask(taskId, authorId);
+            var assignedToOrgMembership = await GetOrgMembershipForTask(taskId, model.AssignedToId);
+            var assignedToProjectMembership = await GetProjectMembershipForTask(taskId, model.AssignedToId);
 
-            var userExists = await _userService.UserExists(u => u.Id == model.AssignedToId);
-            if (!userExists)
-                throw new AppException("User not found", 404);
+            if (authorOrgMembership.Role != OrganizationRole.Admin && authorOrgMembership.Role != OrganizationRole.Manager)
+                throw new AppException("User not authorized to perform this action", 403);
 
-            if (taskItem.Project.Members.All(m => m.UserId != model.AssignedToId))
-                throw new AppException("User is not a member of the project.", 400);
+            var taskItem = await _context.TaskItems.FindAsync(taskId);
 
-            taskItem.AssignedToId = model.AssignedToId;
+            taskItem!.AssignedToId = model.AssignedToId;
             await _context.SaveChangesAsync();
         }
 
-        public async Task DeleteTask(Guid id, Guid userId)
+        public async Task DeleteTask(Guid authorId, Guid taskId)
         {
-            var user = await _context.Users.AsNoTracking().FirstOrDefaultAsync(u => u.Id == userId);
-            if (user is null)
-                throw new AppException("User not found", 404);
+            var orgMembership = await GetOrgMembershipForTask(taskId, authorId);
+            var task = await _context.TaskItems.AsNoTracking().FirstOrDefaultAsync(t => t.Id == taskId);
 
-            var taskItem = await _context.TaskItems.AsNoTracking().FirstOrDefaultAsync(t => t.Id == id);
-            if (taskItem is null)
-                throw new AppException("Task not found", 404);
-
-            if (taskItem.AssignedToId != userId && user.Role != "admin")
+            if (task!.AssignedToId != authorId && orgMembership.Role != OrganizationRole.Admin)
                 throw new AppException("You are not authorized to delete this task.", 403);
 
-            _context.TaskItems.Remove(taskItem);
+            _context.TaskItems.Remove(task);
             await _context.SaveChangesAsync();
 
         }
 
-        public async Task<List<GetTaskItemResponse>> GetAllTasks(Priority? priority, Status? status)
+        public async Task<List<GetTaskItemResponse>> GetAllTasks(Guid authorId, Priority? priority, Status? status)
         {
+
             var query = _context.TaskItems.AsQueryable();
 
             if (priority.HasValue)
@@ -114,34 +83,86 @@ namespace PATH.Infrastructure
             return await query.Select(t => GetTaskItemResponse.FromEntity(t)).AsNoTracking().ToListAsync();
         }
 
-        public async Task<GetTaskItemResponse> GetTaskById(Guid id)
+        public async Task<GetTaskItemResponse> GetTaskById(Guid authorId, Guid taskId)
         {
-            return await _context.TaskItems.Select(t => GetTaskItemResponse.FromEntity(t)).AsNoTracking().FirstOrDefaultAsync(t => t.Id == id) ?? throw new AppException("Task not found", 404);
+            var orgMembership = await GetOrgMembershipForTask(taskId, authorId);
+            return await _context.TaskItems.Select(t => GetTaskItemResponse.FromEntity(t)).AsNoTracking().FirstOrDefaultAsync(t => t.Id == taskId) ?? throw new AppException("Task not found", 404);
         }
 
-        public async Task<List<GetTaskItemResponse>> GetTasksByProjectId(Guid projectId)
+        public async Task<List<GetTaskItemResponse>> GetTasksByProjectId(Guid authorId, Guid projectId)
         {
+            var orgMembership = await GetProjectMembershipForTask(authorId, projectId);
             return await _context.TaskItems.Where(t => t.ProjectId == projectId).Select(t => GetTaskItemResponse.FromEntity(t)).AsNoTracking().ToListAsync();
         }
 
 
 
-        public async Task UpdateTaskStatus(Guid id, Status newStatus, Guid userId)
+        public async Task UpdateTaskStatus(Guid authorId, Guid taskId, Status newStatus)
         {
-            var user = await _context.Users.AsNoTracking().FirstOrDefaultAsync(u => u.Id == userId);
-            if (user is null)
-                throw new AppException("User not found", 404);
 
-            var taskItem = await _context.TaskItems.FindAsync(id);
-            if (taskItem is null)
-                throw new AppException("Task not found", 404);
+            var orgMembership = await GetOrgMembershipForTask(taskId, authorId);
+            var task = await _context.TaskItems.FindAsync(taskId);
 
-            if (taskItem.AssignedToId != userId && user.Role != "admin" && user.Role != "manager")
+            if (task!.AssignedToId != authorId && orgMembership.Role != OrganizationRole.Admin && orgMembership.Role != OrganizationRole.Manager)
                 throw new AppException("You are not authorized to update this task.", 403);
 
-            taskItem.Status = newStatus;
+            task.Status = newStatus;
 
             await _context.SaveChangesAsync();
         }
+
+
+        private async Task<OrganizationMember> GetOrgMembershipForTask(Guid taskId, Guid userId)
+        {
+            var user = await _context.Users.AnyAsync(u => u.Id == userId);
+            if (!user)
+                throw new AppException("User not found", 404);
+
+            return await _context.TaskItems
+                 .Where(t => t.Id == taskId)
+                 .Select(t => _context.OrganizationMembers.FirstOrDefault(o => o.OrganizationId == t.Project.OrganizationId && o.UserId == userId))
+                 .FirstOrDefaultAsync() ?? throw new AppException("User is not authorized to perform this action.", 403);
+        }
+
+        private async Task<ProjectMember> GetProjectMembershipForTask(Guid taskId, Guid userId)
+        {
+            var user = await _context.Users.AnyAsync(u => u.Id == userId);
+            if (!user)
+                throw new AppException("User not found", 404);
+
+            return await _context.TaskItems
+                 .Where(t => t.Id == taskId)
+                 .Select(t => _context.ProjectMembers.FirstOrDefault(p => p.ProjectId == t.ProjectId && p.UserId == userId))
+                 .FirstOrDefaultAsync() ?? throw new AppException("User is not authorized to perform this action.", 403);
+        }
+
+        private async Task<OrganizationMember> GetOrganizationMembership(Guid userId, Guid orgId)
+        {
+
+            return await _context.OrganizationMembers.AsNoTracking()
+                .FirstOrDefaultAsync(o => o.UserId.Equals(userId) && o.OrganizationId.Equals(orgId))
+                ?? throw new AppException("User is not a member of the organization.", 403);
+        }
+
+        private async Task<ProjectMember?> GetProjectMembership(Guid authorId, Guid projectId)
+        {
+            var user = await _context.Users.AnyAsync(u => u.Id == authorId);
+            if (!user)
+                throw new AppException("User not found", 404);
+
+            return await _context.ProjectMembers.AsNoTracking()
+                .FirstOrDefaultAsync(pm => pm.UserId.Equals(authorId) && pm.ProjectId.Equals(projectId));
+        }
+
+        private async Task<OrganizationMember> GetOrganizationMembershipByProjectId(Guid userId, Guid projectId)
+        {
+            return await _context.Projects
+                .Where(p => p.Id.Equals(projectId))
+                .Select(p => _context.OrganizationMembers.FirstOrDefault(om => om.UserId.Equals(userId) && om.OrganizationId.Equals(p.OrganizationId)))
+                .FirstOrDefaultAsync() ?? throw new AppException("User is not a member of this organization.", 403);
+        }
+
+        // What differs project members from org members, is org admin allowed to mkae changes to project he is not a member of (like delete task etc)
+
     }
 }

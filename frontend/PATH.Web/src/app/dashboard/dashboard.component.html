@@ -1,9 +1,0 @@
-<div class="dashboard">
-    @if(authService.isLoggedIn()) {
-    <h1>Welcome back{{ authService.currentUser()?.firstName ? ', ' + authService.currentUser()?.firstName : '' }}</h1>
-    <p class="text-muted">Here's where you manage your work.</p>
-    <div class="dashboard-actions">
-        <a routerLink="/projects" class="btn btn-primary">View Projects</a>
-    </div>
-    }
-</div>

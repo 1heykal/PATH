@@ -8,10 +8,10 @@ namespace PATH.Domain.Models
 {
     public class ChangeRoleModel
     {
+        public Guid OrgId { get; set; }
         [Required]
         public Guid UserId { get; set; }
-
-        [AllowedValues(values: ["admin", "user", "manager"], ErrorMessage = "Please provide a valid role."),]
-        public string NewRole { get; set; }
+        [Required]
+        public OrganizationRole NewRole { get; set; }
     }
 }

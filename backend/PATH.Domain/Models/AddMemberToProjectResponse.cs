@@ -14,15 +14,5 @@ namespace PATH.Domain.Models
         public Guid UserId { get; set; }
         public DateTime JoinedAt { get; set; } = DateTime.UtcNow;
 
-        public static AddMemberToProjectResponse FromEntity(ProjectMember projectMember)
-        {
-            return new AddMemberToProjectResponse
-            {
-                ProjectId = projectMember.ProjectId,
-                UserId = projectMember.UserId,
-                UserName = $"{projectMember.User.FirstName} {projectMember.User.LastName}",
-                JoinedAt = projectMember.JoinedAt
-            };
-        }
     }
 }

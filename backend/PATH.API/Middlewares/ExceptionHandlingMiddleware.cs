@@ -20,7 +20,7 @@ namespace PATH.API.Middlewares
                 context.Response.ContentType = "application/json";             
                 await context.Response.WriteAsJsonAsync(new { message = ex.Message });
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 context.Response.StatusCode = 500;
                 context.Response.ContentType = "application/json";

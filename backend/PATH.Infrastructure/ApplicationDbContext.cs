@@ -18,6 +18,10 @@ namespace PATH.Infrastructure
 
         public DbSet<ProjectMember> ProjectMembers { get; set; }
 
+        public DbSet<Organization> Organizations { get; set; }
+
+        public DbSet<OrganizationMember> OrganizationMembers { get; set; }
+
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
@@ -62,6 +66,24 @@ namespace PATH.Infrastructure
                 .HasOne(p => p.User)
                 .WithMany(u => u.ProjectMemberships)
                 .HasForeignKey(p => p.UserId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<Project>()
+                .HasOne(p => p.Organization)
+                .WithMany(o => o.Projects)
+                .HasForeignKey(p => p.OrganizationId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<OrganizationMember>()
+                .HasOne(o => o.Organization)
+                .WithMany(o => o.Members)
+                .HasForeignKey(o => o.OrganizationId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<Organization>()
+                .HasOne(o => o.CreatedBy)
+                .WithMany()
+                .HasForeignKey(o => o.CreatedById)
                 .OnDelete(DeleteBehavior.NoAction);
 
             modelBuilder.Entity<ProjectMember>()

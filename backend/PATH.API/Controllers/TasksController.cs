@@ -22,10 +22,10 @@ namespace PATH.API.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "admin,manager")]
+        [Authorize]
         public async Task<ActionResult<GetTaskItemResponse>> AddTaskItem(AddTaskModel model)
         {
-            var result = await _taskService.AddTaskItem(model);
+            var result = await _taskService.AddTaskItem(GetAuthorId(), model);
             return CreatedAtAction(nameof(AddTaskItem), new { id = result.Id }, result);
         }
 
@@ -33,33 +33,31 @@ namespace PATH.API.Controllers
         [Authorize]
         public async Task<ActionResult<GetTaskItemResponse>> GetTaskById(Guid id)
         {
-            var result = await _taskService.GetTaskById(id);
+            var result = await _taskService.GetTaskById(GetAuthorId(), id);
             return Ok(result);
         }
 
-        [HttpGet]
-        public async Task<ActionResult<List<GetTaskItemResponse>>> GetAllTasks(Priority? priority, Status? status)
-        {
-            var result = await _taskService.GetAllTasks(priority, status);
-            return Ok(result);
-        }
+        //[HttpGet]
+        //public async Task<ActionResult<List<GetTaskItemResponse>>> GetAllTasks(Priority? priority, Status? status)
+        //{
+        //    var result = await _taskService.GetAllTasks(GetAuthorId(), priority, status);
+        //    return Ok(result);
+        //}
 
 
         [HttpPatch("{id}/status")]
         [Authorize]
         public async Task<ActionResult> UpdateTaskStatus(Guid id, [FromBody] UpdateTaskStatusModel model)
         {
-            var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
-
-            await _taskService.UpdateTaskStatus(id, model.NewStatus, userId);
+            await _taskService.UpdateTaskStatus(GetAuthorId(), id, model.NewStatus);
             return NoContent();
         }
 
         [HttpPatch("{id}/assign")]
-        [Authorize(Roles = "admin,manager")]
+        [Authorize]
         public async Task<ActionResult> AssignTask(Guid id, [FromBody] AssignTaskModel model)
         {
-            await _taskService.AssignTask(id, model);
+            await _taskService.AssignTask(GetAuthorId(), id, model);
             return NoContent();
         }
 
@@ -69,10 +67,11 @@ namespace PATH.API.Controllers
         [Authorize]
         public async Task<ActionResult> DeleteTask(Guid id)
         {
-            var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
-            await _taskService.DeleteTask(id, userId);
+            await _taskService.DeleteTask(GetAuthorId(), id);
             return NoContent();
         }
+
+        private Guid GetAuthorId() => Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
 
     }
 }

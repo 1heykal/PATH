@@ -1,0 +1,16 @@
+<div class="form-card">
+    <h2>Create Organization</h2>
+
+    <label>
+        Organization Name
+        <input type="text" [(ngModel)]="orgName" placeholder="e.g. Acme Corp" />
+    </label>
+
+    @if (errorMessage) {
+    <p class="error">{{ errorMessage }}</p>
+    }
+
+    <button class="primary" (click)="createOrganization()" [disabled]="!orgName.trim()">
+        Create
+    </button>
+</div>

@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using PATH.Application.Exceptions;
 using PATH.Domain;
 using PATH.Domain.Entities;
 using PATH.Domain.Models;
@@ -15,35 +16,38 @@ namespace PATH.Infrastructure
             _context = context;
         }
 
-        public async Task ChangeUserRole(ChangeRoleModel model)
+        public async Task ChangeUserRole(Guid authorId, ChangeRoleModel model)
         {
-            if (Shared.Roles.Contains(model.NewRole.ToLower()))
-            {
-                var user = await _context.Users.FindAsync(model.UserId);
-                if (user is null)
-                    throw new ApplicationException("There is no user with the specified id.");
+            var authorOrgMembership = await GetOrgMembership(authorId, model.OrgId);
+            var userOrgMembership = await GetOrgMembership(model.UserId, model.OrgId);
 
-                user.Role = model.NewRole;
+            if (authorOrgMembership.Role != OrganizationRole.Admin)
+                throw new AppException("User is not authorized to perform this action.");
 
-                await _context.SaveChangesAsync();
-                return;
+            userOrgMembership.Role = model.NewRole;
 
-            }
-            throw new ApplicationException("Invalid role. Please provide a valid role.");
+            await _context.SaveChangesAsync();
 
         }
 
-        public async Task<List<UserDto>> GetAllUsers()
+        public async Task<List<UserDto>> GetAllUsers(Guid authorId, Guid organizationId)
         {
-            return await _context.Users.AsNoTracking().Select(u => new UserDto
-            {
-                Id = u.Id,
-                FirstName = u.FirstName,
-                LastName = u.LastName,
-                Email = u.Email,
-                Role = u.Role,
-                CreatedAt = u.CreatedAt
-            }).ToListAsync();
+            var userOrgMembership = await GetOrgMembership(authorId, organizationId);
+
+            if (userOrgMembership.Role != OrganizationRole.Admin)
+                throw new AppException("User is not authorized to perform this action.");
+
+            return await _context.OrganizationMembers.AsNoTracking()
+                    .Include(o => o.User)
+                    .Where(o => o.OrganizationId == organizationId).Select(o => new UserDto
+                    {
+                        Id = o.User.Id,
+                        FirstName = o.User.FirstName,
+                        LastName = o.User.LastName,
+                        Email = o.User.Email,
+                        CreatedAt = o.User.CreatedAt,
+
+                    }).ToListAsync();
 
         }
 
@@ -55,6 +59,13 @@ namespace PATH.Infrastructure
         public async Task<bool> UserExists(Expression<Func<ApplicationUser, bool>> condition)
         {
             return await _context.Users.AnyAsync(condition);
+        }
+
+        private async Task<OrganizationMember> GetOrgMembership(Guid userId, Guid orgId)
+        {
+            return await _context.OrganizationMembers
+                .FirstOrDefaultAsync(om => om.UserId.Equals(userId) && om.OrganizationId.Equals(orgId)) ??
+                throw new AppException("User is not a member of the organization", 403);
         }
 
     }

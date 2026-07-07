@@ -1,0 +1,27 @@
+<div class="layout">
+    <nav class="navbar">
+        <a routerLink="/dashboard" class="logo">PATH</a>
+
+        <button class="nav-toggle" (click)="navOpen = !navOpen" aria-label="Toggle navigation">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+
+        <div class="nav-links" [class.open]="navOpen">
+            <a routerLink="/organizations" routerLinkActive="active" (click)="navOpen = false">Organizations</a>
+            @if (authService.currentUser()?.role === 'admin') {
+            <a routerLink="/admin" routerLinkActive="active" (click)="navOpen = false">Admin</a>
+            }
+        </div>
+
+        <div class="nav-user">
+            <span class="user-name">{{ authService.currentUser()?.firstName }}</span>
+            <button class="btn btn-secondary" (click)="logout()">Logout</button>
+        </div>
+    </nav>
+
+    <main class="content">
+        <router-outlet />
+    </main>
+</div>

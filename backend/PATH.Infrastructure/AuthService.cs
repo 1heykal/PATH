@@ -33,7 +33,7 @@ namespace PATH.Infrastructure
         // Register User
         public async Task RegisterUser(RegisterUserModel model)
         {
-            if (await _userService.UserExists(u => u.Email == model.Email))
+            if (await _userService.UserExists(u => u.Email.ToLower() == model.Email.ToLower()))
             {
                 throw new AppException("Email already exists.", 404);
             }
@@ -106,7 +106,7 @@ namespace PATH.Infrastructure
                 LastName = user.LastName,
                 Email = user.Email,
                 BirthDate = user.BirthDate,
-                Role = user.Role
+                //  Role = user.Role
             };
 
             return (newAccessToken, newRefreshToken, userInfo);
@@ -127,7 +127,7 @@ namespace PATH.Infrastructure
                 new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
                 new Claim(JwtRegisteredClaimNames.Name, user.Username),
                 new Claim(JwtRegisteredClaimNames.Email, user.Email),
-                new Claim(ClaimTypes.Role, user.Role),
+             //   new Claim(ClaimTypes.Role, user.Role),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()) // we will see future uses of this, Don't forget.
 
 
@@ -213,7 +213,7 @@ namespace PATH.Infrastructure
                 LastName = token.User.LastName,
                 Email = token.User.Email,
                 BirthDate = token.User.BirthDate,
-                Role = token.User.Role
+                //  Role = token.User.Role
             };
 
             await _context.SaveChangesAsync();

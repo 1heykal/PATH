@@ -1,0 +1,73 @@
+@if (isLoading) {
+<app-spinner></app-spinner>
+} @else if (organization) {
+<div class="org-detail">
+
+    <div class="page-header">
+        <div>
+            <h2>{{ organization.name }}</h2>
+            <p class="subtitle">Created by {{ organization.creatorName }} · {{ organization.createdAt | date:
+                'mediumDate' }}</p>
+        </div>
+    </div>
+
+    <div class="section">
+        <h3>Members</h3>
+        @if (organization.members.length > 0) {
+        <div class="members-list">
+            @for (member of organization.members; track member.userId) {
+            <div class="member-card card">
+                <div class="member-card-header">
+                    <strong class="member-name">{{ member.name }}</strong>
+                    <span class="badge">{{ member.role }}</span>
+                </div>
+                <span class="member-email">{{ member.email }}</span>
+                <label class="form-label" [for]="'role-' + member.id">Role</label>
+
+                <select [id]="'role-' + member.id" [(ngModel)]="member.role"
+                    (change)="changeUserRole(member.userId, member.role)" [disabled]="!isUserAllowedToChangeRole()">
+                    <option value="Member">Member</option>
+                    <option value="Admin">Admin</option>
+                    <option value="Manager">Manager</option>
+                </select>
+            </div>
+            }
+        </div>
+
+        } @else {
+        <p class="muted">No members yet.</p>
+        }
+
+        @if (organization.currentUserRole === 'Admin') {
+        <div class="add-member card">
+            <h4>Add Organization Member</h4>
+            <div class="add-member-row">
+                <input class="member-email-input" type="text" [(ngModel)]="memberEmail" placeholder="Enter user email" />
+                <button class="btn btn-primary add-member-button" (click)="addMember()">Add member</button>
+            </div>
+            @if (errorMessage) {
+            <p class="error">{{ errorMessage }}</p>
+            }
+            @if (successMessage) {
+            <p class="success">{{ successMessage }}</p>
+            }
+        </div>
+        }
+    </div>
+
+    <div class="section">
+        <div class="page-header">
+            <h2>Projects</h2>
+            @if (organization.currentUserRole === 'Admin') {
+            <button class="btn btn-primary" [routerLink]="['/projects/create']"
+                [queryParams]="{ orgId: organization.id}">+ New Project</button>
+            }
+        </div>
+
+        <app-projects [projects]="organization.projects" />
+    </div>
+
+</div>
+} @else {
+<p>Organization not found.</p>
+}

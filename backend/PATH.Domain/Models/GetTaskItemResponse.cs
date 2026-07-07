@@ -46,5 +46,24 @@ namespace PATH.Domain.Models
                 ProjectId = taskItem.ProjectId
             };
         }
+
+        public GetTaskItemResponse()
+        {
+
+        }
+
+        public GetTaskItemResponse(TaskItem task, string userFullName)
+        {
+            Id = task.Id;
+            Title = task.Title;
+            Description = task.Description;
+            Status = task.Status;
+            Priority = task.Priority;
+            DueDate = task.DueDate;
+            AssignedToId = task.AssignedToId;
+            AssignedToName = userFullName;
+            CreatedAt = task.CreatedAt;
+            ProjectId = task.ProjectId;
+        }
     }
 }

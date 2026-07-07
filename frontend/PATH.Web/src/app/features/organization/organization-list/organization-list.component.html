@@ -1,0 +1,25 @@
+<div class="page-header">
+    <h2>Organizations</h2>
+    <button class="btn btn-primary" routerLink="/organizations/create">+ New Organization</button>
+</div>
+
+@if (isLoading) {
+<app-spinner></app-spinner>
+} @else if (organizations.length === 0) {
+<div class="empty-state">
+    <p>No organizations yet.</p>
+    <button class="btn btn-primary" routerLink="/organizations/create">Create your first Organization</button>
+</div>
+} @else {
+<div class="organization-grid">
+    @for (org of organizations; track org.id) {
+    <a [routerLink]="['/organizations', org.id]" class="organization-card card card-hover">
+        <h3>{{ org.name }}</h3>
+        <div class="card-footer">
+            <span class="creator">{{ org.creatorName }}</span>
+            <span class="date">{{ org.createdAt | date: 'mediumDate' }}</span>
+        </div>
+    </a>
+    }
+</div>
+}

@@ -15,8 +15,5 @@ namespace PATH.Domain.Models
 
         public DateOnly BirthDate { get; set; }
 
-        public string Role { get; set; }
-
-
     }
 }

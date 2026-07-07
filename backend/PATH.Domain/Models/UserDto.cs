@@ -2,11 +2,10 @@
 {
     public class UserDto
     {
-        public object Id { get; set; }
-        public object FirstName { get; set; }
-        public object LastName { get; set; }
-        public object Email { get; set; }
-        public object Role { get; set; }
-        public object CreatedAt { get; set; }
+        public Guid Id { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string Email { get; set; }
+        public DateTime CreatedAt { get; set; }
     }
 }

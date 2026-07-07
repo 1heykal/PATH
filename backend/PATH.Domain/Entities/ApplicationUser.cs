@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace PATH.Domain.Entities
@@ -22,7 +23,7 @@ namespace PATH.Domain.Entities
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
-        public string Role { get; set; } = "user";
+        public ICollection<OrganizationMember> OrganizationMemberships { get; set; } = new HashSet<OrganizationMember>();
 
         public ICollection<RefreshToken> RefreshTokens { get; set; } = new HashSet<RefreshToken>();
 

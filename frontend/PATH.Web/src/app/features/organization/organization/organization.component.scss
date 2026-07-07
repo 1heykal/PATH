@@ -1,0 +1,93 @@
+@import '../../styles/variables';
+
+.org-detail {
+	max-width: 1100px;
+}
+
+.org-detail > .section + .section {
+	margin-top: $space-2xl;
+}
+
+.members-list {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+	gap: $space-md;
+	margin-bottom: $space-lg;
+}
+
+.member-card {
+	display: flex;
+	flex-direction: column;
+	gap: $space-sm;
+}
+
+.member-card-header {
+	display: flex;
+	justify-content: space-between;
+	gap: $space-sm;
+	align-items: center;
+}
+
+.member-name,
+.member-email {
+	word-break: break-word;
+}
+
+.member-email {
+	color: $color-text-muted;
+	font-size: $text-sm;
+}
+
+.add-member {
+	margin-top: $space-sm;
+	padding: $space-md;
+	background: $color-surface;
+	border: 1px solid $color-border;
+	border-radius: $radius;
+	box-shadow: $shadow-sm;
+
+	h4 {
+		margin: 0;
+		font-size: $text-sm;
+		font-weight: $weight-semibold;
+		color: $color-text-muted;
+		margin-bottom: $space-sm;
+	}
+}
+
+.add-member-row {
+	display: flex;
+	gap: $space-sm;
+	align-items: stretch;
+	flex-wrap: wrap;
+	margin-top: 0;
+
+	input {
+		min-width: 0;
+		flex: 1 1 auto;
+		height: 44px;
+	}
+}
+
+.add-member-button {
+	white-space: nowrap;
+	padding-inline: $space-lg;
+	min-height: 44px;
+}
+
+.member-email-input {
+	border-radius: $radius-full;
+	padding-inline: $space-lg;
+	background: $color-bg;
+	border-color: $color-border;
+
+	&:focus {
+		border-color: $color-accent;
+		background: $color-surface;
+	}
+}
+
+.error,
+.success {
+	margin-top: $space-sm;
+}

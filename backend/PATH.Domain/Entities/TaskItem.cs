@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PATH.Domain.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -32,6 +33,24 @@ namespace PATH.Domain.Entities
 
         [ForeignKey(nameof(Project))]
         public Guid ProjectId { get; set; }
+
+        public TaskItem()
+        {
+            
+        }
+
+
+        public TaskItem(AddTaskModel model)
+        {
+
+            Title = model.Title;
+            Description = model.Description;
+            Status = model.Status;
+            Priority = model.Priority;
+            DueDate = model.DueDate;
+            AssignedToId = model.AssignedToId;
+            ProjectId = model.ProjectId;
+        }
 
     }
 }

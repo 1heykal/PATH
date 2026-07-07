@@ -5,6 +5,7 @@
     border-radius: $radius;
     font-size: $text-sm;
     list-style: none;
+    overflow-wrap: anywhere;
 
     li + li {
         margin-top: $space-xs;

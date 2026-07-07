@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PATH.Domain.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -22,8 +23,26 @@ namespace PATH.Domain.Entities
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
+
+        [ForeignKey(nameof(Organization))]
+        public Guid OrganizationId { get; set; }
+        public Organization Organization { get; set; }
+
         public ICollection<ProjectMember> Members { get; set; } = new HashSet<ProjectMember>();
 
         public ICollection<TaskItem> Tasks { get; set; } = new HashSet<TaskItem>();
+
+        public Project()
+        {
+            
+        }
+
+        public Project(Guid createdById, AddProjectModel model)
+        {
+            CreatedById = createdById;
+            Description = model.Description;
+            Name = model.Name;
+            OrganizationId = model.OrganizationId;
+        }
     }
 }
