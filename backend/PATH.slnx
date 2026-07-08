@@ -1,6 +1,9 @@
 <Solution>
-  <Project Path="backend/PATH.API/PATH.API.csproj" />
-  <Project Path="backend/PATH.Application/PATH.Application.csproj" />
-  <Project Path="backend/PATH.Domain/PATH.Domain.csproj" />
-  <Project Path="backend/PATH.Infrastructure/PATH.Infrastructure.csproj" />
+  <Folder Name="/Solution Items/">
+    <File Path="Dockerfile" />
+  </Folder>
+  <Project Path="PATH.API/PATH.API.csproj" />
+  <Project Path="PATH.Application/PATH.Application.csproj" />
+  <Project Path="PATH.Domain/PATH.Domain.csproj" />
+  <Project Path="PATH.Infrastructure/PATH.Infrastructure.csproj" />
 </Solution>
