@@ -37,7 +37,10 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("CorsPolicy", policy =>
     {
-        policy.WithOrigins("http://localhost:4200", "https://localhost:7129")
+        policy.WithOrigins(
+            "http://localhost:4200",
+            "https://localhost:7129",
+            "https://pathapp.up.railway.app")
         .AllowAnyHeader()
         .AllowAnyMethod()
         .AllowCredentials();
