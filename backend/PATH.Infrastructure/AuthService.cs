@@ -30,7 +30,6 @@ namespace PATH.Infrastructure
         }
 
 
-        // Register User
         public async Task RegisterUser(RegisterUserModel model)
         {
             if (await _userService.UserExists(u => u.Email.ToLower() == model.Email.ToLower()))
@@ -133,14 +132,7 @@ namespace PATH.Infrastructure
                 new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
                 new Claim(JwtRegisteredClaimNames.Name, user.Username),
                 new Claim(JwtRegisteredClaimNames.Email, user.Email),
-             //   new Claim(ClaimTypes.Role, user.Role),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()) // we will see future uses of this, Don't forget.
-
-
-                //permissions
-               //new Claim("scope", "read:profile", "write:profile"),
-               //new Claim("TokenType", "AccessToken"),
-
             };
 
             // 3. Signature
@@ -219,7 +211,9 @@ namespace PATH.Infrastructure
                 LastName = token.User.LastName,
                 Email = token.User.Email,
                 BirthDate = token.User.BirthDate,
-                //  Role = token.User.Role
+                OrganizationsCount = await _context.OrganizationMembers.AsNoTracking().CountAsync(om => om.UserId.Equals(token.UserId)),
+                ProjectsCount = await _context.ProjectMembers.AsNoTracking().CountAsync(pm => pm.UserId.Equals(token.UserId)),
+                TasksCount = await _context.TaskItems.AsNoTracking().CountAsync(t => t.AssignedToId.Equals(token.UserId))
             };
 
             await _context.SaveChangesAsync();

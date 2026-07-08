@@ -22,9 +22,6 @@ export class LoginComponent {
   };
 
   login() {
-    // if (!this.validateForm()) {
-    //   return;
-    // }
     this.authService.login(this.accessModel).subscribe({
       next: () => {
         this.errorMessage.set(null);
@@ -33,7 +30,6 @@ export class LoginComponent {
         this.errorMessage.set([
           err.error?.message || 'Login failed. Please try again.',
         ]);
-        console.error('Login error:', err);
       },
     });
   }

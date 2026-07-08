@@ -24,28 +24,10 @@ export class ProjectService {
   }
 
   addMemberToProject(id: string, userId: string) {
-    return this.http.post(`${this.API_URL}/${id}/members`, { userId }).pipe(
-      tap({
-        next: (response) => {
-          console.log('Member added successfully:', response);
-        },
-        error: (err) => {
-          console.error('Error adding member:', err);
-        },
-      }),
-    );
+    return this.http.post(`${this.API_URL}/${id}/members`, { userId });
   }
 
   createProject(project: CreateProject) {
-    return this.http.post<ProjectDetail>(this.API_URL, project).pipe(
-      tap({
-        next: (response) => {
-          console.log('Project created successfully:', response);
-        },
-        error: (err) => {
-          console.error('Error creating project:', err);
-        },
-      }),
-    );
+    return this.http.post<ProjectDetail>(this.API_URL, project);
   }
 }

@@ -58,7 +58,6 @@ export class CreateTaskComponent {
             'Task creation failed. Please try again.',
           ),
         );
-        console.error('Error creating task:', err);
       },
     });
   }

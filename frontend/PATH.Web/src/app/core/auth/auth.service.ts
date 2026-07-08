@@ -37,7 +37,6 @@ export class AuthService {
             this.router.navigate(['/dashboard']);
           },
           error: (err) => {
-            console.error(err);
           },
         }),
       );
@@ -53,24 +52,13 @@ export class AuthService {
             this.currentUser.set(null);
             this.router.navigate(['/login']);
           },
-          error: (err) => {
-            console.error(err);
-          },
+         
         }),
       );
   }
 
   register(registerUserModel: RegisterUserModel) {
-    return this.http.post(`${this.API_URL}/Register`, registerUserModel).pipe(
-      tap({
-        next: (response) => {
-          console.log(response);
-        },
-        error: (err) => {
-          console.error(err);
-        },
-      }),
-    );
+    return this.http.post(`${this.API_URL}/Register`, registerUserModel);
   }
 
   refresh() {
@@ -87,9 +75,7 @@ export class AuthService {
             this.currentUser.set(response.user);
           },
           error: (err) => {
-            console.error(err);
             this.currentUser.set(null);
-            // this.router.navigate(['login']);
           },
         }),
         catchError(() => of(null)),

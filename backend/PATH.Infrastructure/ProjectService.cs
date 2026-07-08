@@ -57,20 +57,12 @@ namespace PATH.Infrastructure
                 CreatorName = $"{user.FirstName} {user.LastName}",
                 OrganizationId = newProject.OrganizationId,
                 CurrentUserRole = orgMembership.Role,
-                //   Members = new List<ProjectMemberBasicInfo>(),
-                //   Tasks = new List<GetTaskItemResponse>()
             };
 
         }
 
         public async Task<GetProjectByIdDto> GetProjectById(Guid authorId, Guid projectId)
         {
-            //var project = await _dbcontext.Projects.Where(p => p.Id.Equals(projectId)).FirstOrDefaultAsync() ?? throw new AppException("Project not found", 404);
-
-            //var orgMembership = await _dbcontext.OrganizationMembers.FirstOrDefaultAsync(om => om.OrganizationId.Equals(project.OrganizationId) && om.UserId.Equals(authorId))
-            //    ?? throw new AppException("User is not authorized to perform this action.", 403);
-
-
             var orgMembership = await _dbcontext.Projects
                .Where(p => p.Id.Equals(projectId))
                .Select(p => _dbcontext.OrganizationMembers.FirstOrDefault(om => om.OrganizationId.Equals(p.OrganizationId) && om.UserId.Equals(authorId)))
@@ -146,9 +138,6 @@ namespace PATH.Infrastructure
             if (orgMembership.Role != OrganizationRole.Admin)
                 throw new AppException("User not authorized to perform this action", 403);
 
-            //var projectExists = await _dbcontext.Projects.AnyAsync(p => p.Id == projectId);
-            //if (!projectExists)
-            //    throw new AppException("Project not found", 404);
 
             var user = await _userService.GetUserById(model.UserId);
             if (user is null)

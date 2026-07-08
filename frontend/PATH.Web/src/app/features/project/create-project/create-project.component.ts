@@ -35,15 +35,8 @@ export class CreateProjectComponent {
   private route = inject(ActivatedRoute);
 
   createProject() {
-    // if (!this.userAllowedToCreateProject) {
-    //   console.error('User is not allowed to create a project.');
-    //   return;
-    // }
-
     this.projectModel.organizationId =
       this.route.snapshot.queryParamMap.get('orgId') || '';
-
-    // if (!this.validateForm()) return;
 
     this.projectService.createProject(this.projectModel).subscribe({
       next: () => {
@@ -59,7 +52,6 @@ export class CreateProjectComponent {
         this.errorMessage.set(
           err.error?.message || 'Project creation failed. Please try again.',
         );
-        console.error('Error creating project:', err);
       },
     });
   }
@@ -67,15 +59,4 @@ export class CreateProjectComponent {
   isFormValid() {
     return this.projectModel.name.trim() !== '';
   }
-
-  // validateForm() {
-  //   const errors: string[] = [];
-  //   if (this.projectModel.name.trim() === '') {
-  //     errors.push('Project name is required.');
-  //   }
-
-  //   if (errors.length > 0) this.errorMessage.set(errors);
-
-  //   return errors.length === 0;
-  // }
 }

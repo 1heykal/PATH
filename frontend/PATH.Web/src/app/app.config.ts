@@ -28,15 +28,3 @@ export function initializeApp(authService: AuthService) {
   return () => authService.refresh();
 }
 
-// export function initializeApp(authService: AuthService, router: Router) {
-//   return () => {
-//     try {
-//       authService.refresh();
-//     } catch (err: any) {
-//       if (err.status == 401) {
-//         router.navigate(['/login']);
-//       } else authService.refresh();
-//     }
-//     catchError(() => of(null));
-//   };
-// }

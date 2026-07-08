@@ -37,14 +37,6 @@ namespace PATH.API.Controllers
             return Ok(result);
         }
 
-        //[HttpGet]
-        //public async Task<ActionResult<List<GetTaskItemResponse>>> GetAllTasks(Priority? priority, Status? status)
-        //{
-        //    var result = await _taskService.GetAllTasks(GetAuthorId(), priority, status);
-        //    return Ok(result);
-        //}
-
-
         [HttpPatch("{id}/status")]
         [Authorize]
         public async Task<ActionResult> UpdateTaskStatus(Guid id, [FromBody] UpdateTaskStatusModel model)

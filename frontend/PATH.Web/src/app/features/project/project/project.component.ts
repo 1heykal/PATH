@@ -79,16 +79,13 @@ export class ProjectComponent implements OnInit {
             this.loadProject();
             this.addedMemberId = null;
           },
-          error: (err) => {
-            console.error('Error adding member:', err);
-          },
+        
         });
     }
   }
 
   updateTaskStatus(taskId: string, newStatus: Status) {
     if (!this.project()) {
-      console.error('Project data is not loaded yet.');
       return;
     }
 
@@ -108,7 +105,6 @@ export class ProjectComponent implements OnInit {
 
   assignTaskToUser(taskId: string, userId: string) {
     if (!this.project()) {
-      console.error('Project data is not loaded yet.');
       return;
     }
 
@@ -166,21 +162,11 @@ export class ProjectComponent implements OnInit {
           const projectMemberIds = this.project()!.members.map(
             (m) => m.memberId,
           );
-          console.log('Project Member IDs:', projectMemberIds);
-          console.log(
-            'Organization Members:',
-            this.organizationMembers[0]?.userId,
-          );
-          console.log(
-            projectMemberIds[0] == this.organizationMembers[0]?.userId,
-          );
+         
           this.organizationMembers = response.filter(
             (member) => !projectMemberIds.includes(member.userId),
           );
-          console.log(
-            'Organization Members:',
-            this.organizationMembers[0]?.userId,
-          );
+         
           this.orgMembersLoaded = true;
         });
     }
