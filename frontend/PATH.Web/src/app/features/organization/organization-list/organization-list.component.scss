@@ -1,1 +1,97 @@
+@import '../../../../styles/variables';
 
+.organization-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: $space-lg;
+}
+
+.organization-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    min-height: 160px;
+
+    padding: $space-lg;
+
+    background: $color-surface;
+    border: 1px solid $color-border;
+    border-radius: $radius;
+    box-shadow: $shadow-sm;
+
+    text-decoration: none;
+    color: inherit;
+
+    transition:
+        transform .18s ease,
+        border-color .18s ease,
+        box-shadow .18s ease;
+
+    &:hover {
+        transform: translateY(-2px);
+        border-color: $color-accent;
+        box-shadow: $shadow-sm;
+    }
+}
+
+.organization-content {
+    display: flex;
+    flex-direction: column;
+    gap: $space-sm;
+}
+
+.organization-card h3 {
+    margin: 0;
+    font-size: $text-lg;
+    font-weight: $weight-semibold;
+    color: $color-text;
+    word-break: break-word;
+}
+
+.description {
+    margin: 0;
+    font-size: $text-sm;
+    color: $color-text-muted;
+}
+
+.card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    margin-top: $space-xl;
+    padding-top: $space-md;
+
+    border-top: 1px solid $color-border;
+
+    font-size: $text-sm;
+    color: $color-text-muted;
+
+    gap: $space-md;
+}
+
+.creator {
+    font-weight: $weight-medium;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.date {
+    flex-shrink: 0;
+}
+
+.empty-state {
+    padding: $space-2xl;
+    text-align: center;
+
+    border: 1px dashed $color-border;
+    border-radius: $radius;
+
+    color: $color-text-muted;
+
+    p {
+        margin-bottom: $space-lg;
+    }
+}

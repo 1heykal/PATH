@@ -1,9 +1,196 @@
 <div class="dashboard">
-    @if(authService.isLoggedIn()) {
-    <h1>Welcome back{{ authService.currentUser()?.firstName ? ', ' + authService.currentUser()?.firstName : '' }}</h1>
-    <p class="text-muted">Here's where you manage your work.</p>
-    <div class="dashboard-actions">
-        <a routerLink="/organizations" class="btn btn-primary">View Organizations</a>
-    </div>
-    }
+
+    <section class="hero">
+
+        <div class="hero-content">
+
+            <p class="eyebrow">
+                Workspace
+            </p>
+
+            <h1>
+                {{ greeting }}, {{ authService.currentUser()?.firstName }} 👋
+            </h1>
+
+            <p class="hero-description">
+                Everything you're building, organized in one place.
+                Manage organizations, projects, and tasks with a clean, focused workflow.
+            </p>
+
+            <div class="hero-actions">
+
+                <a routerLink="/organizations" class="btn btn-primary">
+
+                    Organizations
+
+                </a>
+
+                <a routerLink="/organizations/create" class="btn btn-secondary">
+
+                    New Organization
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <hr class="section-divider">
+
+    <section>
+
+        <div class="section-header">
+
+            <div>
+
+                <h2>Workspace Overview</h2>
+
+                <p class="subtitle">
+                    A quick summary of your workspace.
+                </p>
+
+            </div>
+
+        </div>
+
+        <div class="stats-grid">
+
+            <div class="stat-card">
+
+                <span class="stat-number">
+                    {{ stats.organizationCount }}
+                </span>
+
+                <span class="stat-label">
+                    Organizations
+                </span>
+
+            </div>
+
+            <div class="stat-card">
+
+                <span class="stat-number">
+                    {{ stats.projectCount }}
+                </span>
+
+                <span class="stat-label">
+                    Projects
+                </span>
+
+            </div>
+
+            <div class="stat-card">
+
+                <span class="stat-number">
+                    {{ stats.taskCount }}
+                </span>
+
+                <span class="stat-label">
+                    Tasks
+                </span>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <hr class="section-divider">
+
+    <section>
+
+        <div class="section-header">
+
+            <div>
+
+                <h2>Get Started</h2>
+
+                <p class="subtitle">
+                    The recommended workflow.
+                </p>
+
+            </div>
+
+        </div>
+
+        <div class="steps">
+
+            <div class="step">
+
+                <div class="step-number">
+                    1
+                </div>
+
+                <div class="step-content">
+
+                    <h3>Create an Organization</h3>
+
+                    <p>
+                        Organizations keep your projects and members together.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="step">
+
+                <div class="step-number">
+                    2
+                </div>
+
+                <div class="step-content">
+
+                    <h3>Create a Project</h3>
+
+                    <p>
+                        Every project belongs to an organization.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="step">
+
+                <div class="step-number">
+                    3
+                </div>
+
+                <div class="step-content">
+
+                    <h3>Invite Members</h3>
+
+                    <p>
+                        Collaborate with your team by assigning roles.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="step">
+
+                <div class="step-number">
+                    4
+                </div>
+
+                <div class="step-content">
+
+                    <h3>Create Tasks</h3>
+
+                    <p>
+                        Organize work, assign teammates, and track progress.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
 </div>

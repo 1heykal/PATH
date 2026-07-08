@@ -1,31 +1,70 @@
-@import '../../styles/variables';
+@import '../../../../styles/variables';
 
 .project-detail {
-    max-width: 900px;
+    max-width: 1000px;
+    margin-inline: auto;
+}
+
+/* ===========================
+   HEADER
+=========================== */
+
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: $space-lg;
+    flex-wrap: wrap;
+    margin-bottom: $space-lg;
+}
+
+.section-header {
+    margin-bottom: $space-lg;
+
+    h3 {
+        margin: 0;
+        font-size: $text-lg;
+        font-weight: $weight-semibold;
+    }
+}
+
+.subtitle {
+    margin: $space-xs 0 0;
+    font-size: $text-sm;
+    color: $color-text-muted;
 }
 
 .meta {
     display: flex;
+    flex-wrap: wrap;
+    align-items: center;
     gap: $space-lg;
-    color: $color-text-muted;
-    font-size: $text-sm;
-    margin-bottom: $space-xl;
+
+    margin-bottom: $space-md;
     padding-bottom: $space-md;
+
+    font-size: $text-sm;
+    color: $color-text-muted;
+
     border-bottom: 1px solid $color-border;
 }
 
 .page-nav {
-    margin: $space-md 0 $space-lg;
+    margin: $space-sm 0 $space-lg;
 }
 
 .back-link {
     display: inline-flex;
     align-items: center;
     gap: $space-xs;
-    color: $color-text-muted;
+
     font-size: $text-sm;
     font-weight: $weight-medium;
+
+    color: $color-text-muted;
     text-decoration: none;
+
+    transition: color .18s ease;
 
     &:hover {
         color: $color-text;
@@ -33,19 +72,19 @@
     }
 }
 
-.section {
-    margin-bottom: $space-xl;
-    
-    &:has(.member-actions) {
-        margin-top: $space-sm;
-    }
+/* ===========================
+   DIVIDERS
+=========================== */
 
-    h3 {
-        font-size: $text-lg;
-        font-weight: $weight-semibold;
-        margin-bottom: $space-md;
-    }
+.section-divider {
+   margin: $space-lg 0;
+	border: 0;
+	border-top: 1px solid $color-border;
 }
+
+/* ===========================
+   MEMBERS
+=========================== */
 
 .members-list {
     display: flex;
@@ -53,81 +92,138 @@
     gap: $space-sm;
 }
 
-.member-actions {
-    margin-bottom: $space-sm;
-    padding: $space-md;
-    background: $color-surface;
+.member-pill {
+    padding: $space-sm $space-md;
+
+    border-radius: $radius-full;
     border: 1px solid $color-border;
-    border-radius: $radius;
-    box-shadow: $shadow-sm;
+    background: $color-surface;
+
+    font-size: $text-sm;
+    font-weight: $weight-medium;
+
+    transition:
+        border-color .18s ease,
+        transform .18s ease;
+
+    &:hover {
+        transform: translateY(-1px);
+        border-color: $color-accent;
+    }
+}
+
+/* ===========================
+   ADD MEMBER
+=========================== */
+
+.member-actions {
+    margin-top: $space-xl;
+}
+
+.member-actions-header {
+    margin-bottom: $space-lg;
 
     h4 {
         margin: 0;
-        font-size: $text-sm;
+        font-size: $text-lg;
         font-weight: $weight-semibold;
+    }
+
+    p {
+        margin: $space-xs 0 0;
+        font-size: $text-sm;
         color: $color-text-muted;
-        margin-bottom: $space-sm;
     }
 }
 
 .member-actions-row {
     display: flex;
+    align-items: center;
+    gap: $space-md;
     flex-wrap: wrap;
-    gap: $space-sm;
-    align-items: stretch;
 }
 
 .member-select {
-    background: $color-bg;
-    min-height: 44px;
-    flex: 1 1 260px;
-    border-radius: $radius-full;
+    flex: 1;
+    min-width: 260px;
+
+    height: 44px;
     padding-inline: $space-lg;
-    border-color: $color-border;
+
+    background: $color-surface;
+    border: 1px solid $color-border;
+    border-radius: $radius-full;
+
+    transition: border-color .18s ease;
 
     &:focus {
         border-color: $color-accent;
-        background: $color-surface;
+        outline: none;
     }
 }
 
 .member-add-button {
+    height: 44px;
+    padding-inline: $space-xl;
     white-space: nowrap;
-    padding-inline: $space-lg;
-    min-height: 44px;
 }
 
-.member-pill {
-    white-space: nowrap;
-}
+/* ===========================
+   TASKS
+=========================== */
 
 .task-list {
     display: flex;
     flex-direction: column;
-    gap: $space-md;
+    gap: $space-lg;
+}
+
+.task-card {
+    padding: $space-lg;
+
+    background: $color-surface;
+    border: 1px solid $color-border;
+    border-radius: $radius;
+    box-shadow: $shadow-sm;
+
+    transition:
+        transform .18s ease,
+        border-color .18s ease;
+
+    &:hover {
+        transform: translateY(-2px);
+        border-color: $color-accent;
+    }
 }
 
 .task-header {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    margin-bottom: $space-sm;
+    align-items: flex-start;
+    gap: $space-md;
+
+    margin-bottom: $space-md;
 
     strong {
         font-size: $text-base;
+        font-weight: $weight-semibold;
     }
 }
 
 .task-meta {
+    margin-bottom: $space-lg;
+
     font-size: $text-sm;
+    line-height: 1.5;
+
     color: $color-text-muted;
-    margin-bottom: $space-md;
 }
 
 .task-controls {
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
     gap: $space-lg;
-    flex-wrap: wrap;
+    align-items: end;
 }
 
 .control-group {
@@ -136,28 +232,72 @@
     gap: $space-xs;
 
     select {
-        width: auto;
-        min-width: 140px;
+        width: 100%;
     }
 }
 
 .task-actions {
-    margin-left: auto;
-
     .btn-danger {
         white-space: nowrap;
     }
 }
 
-.task-card {
-    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.02);
+/* ===========================
+   EMPTY STATE
+=========================== */
+
+.empty-state {
+    padding: $space-2xl;
+
+    text-align: center;
+
+    border: 1px dashed $color-border;
+    border-radius: $radius;
+
+    color: $color-text-muted;
 }
+
+/* ===========================
+   DELETE MODAL
+=========================== */
 
 .delete-confirm-modal {
     gap: $space-md;
 }
 
 .delete-confirm-actions {
-    justify-content: flex-end;
     margin-top: $space-sm;
+    justify-content: flex-end;
+}
+
+/* ===========================
+   RESPONSIVE
+=========================== */
+
+@media (max-width: 768px) {
+    .page-header {
+        align-items: flex-start;
+    }
+
+    .member-actions-row {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .member-select {
+        min-width: 100%;
+    }
+
+    .member-add-button {
+        width: 100%;
+    }
+
+    .task-controls {
+        grid-template-columns: 1fr;
+    }
+
+    .task-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
 }

@@ -1,20 +1,218 @@
-@import '../../styles/variables';
+@import '../../../styles/variables';
 
 .dashboard {
-    h1 {
-        font-size: $text-3xl;
-        font-weight: $weight-bold;
-        margin-bottom: $space-sm;
-        letter-spacing: -0.02em;
+    max-width: 1100px;
+    margin-inline: auto;
+    padding-block: $space-lg;
+}
+
+/* ===========================
+   HERO
+=========================== */
+
+.hero {
+    padding-block: $space-2xl;
+}
+
+.hero-content {
+    max-width: 720px;
+}
+
+.eyebrow {
+    margin: 0 0 $space-sm;
+
+    font-size: $text-sm;
+    font-weight: $weight-semibold;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+
+    color: $color-accent;
+}
+
+.hero h1 {
+    margin: 0;
+
+    font-size: $text-3xl;
+    font-weight: $weight-bold;
+    line-height: 1.15;
+    letter-spacing: -.02em;
+}
+
+.hero-description {
+    margin: $space-md 0 0;
+
+    max-width: 620px;
+
+    font-size: $text-lg;
+    line-height: 1.7;
+
+    color: $color-text-muted;
+}
+
+.hero-actions {
+    display: flex;
+    gap: $space-md;
+    flex-wrap: wrap;
+
+    margin-top: $space-xl;
+}
+
+/* ===========================
+   SECTIONS
+=========================== */
+
+.section-divider {
+    margin: $space-2xl 0;
+    border: 0;
+    border-top: 1px solid $color-border;
+}
+
+.section-header {
+    margin-bottom: $space-xl;
+
+    h2 {
+        margin: 0;
+        font-size: $text-xl;
+        font-weight: $weight-semibold;
     }
 
-    .text-muted {
-        font-size: $text-lg;
-        margin-bottom: $space-xl;
+    .subtitle {
+        margin-top: $space-xs;
+        color: $color-text-muted;
     }
 }
 
-.dashboard-actions {
+/* ===========================
+   STATS
+=========================== */
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: $space-lg;
+}
+
+.stat-card {
+    padding: $space-xl;
+
+    border: 1px solid $color-border;
+    border-radius: $radius;
+    background: $color-surface;
+
+    transition:
+        transform .18s ease,
+        border-color .18s ease;
+
+    &:hover {
+        transform: translateY(-2px);
+        border-color: $color-accent;
+    }
+}
+
+.stat-number {
+    display: block;
+
+    font-size: 2.4rem;
+    font-weight: $weight-bold;
+    line-height: 1;
+}
+
+.stat-label {
+    display: block;
+
+    margin-top: $space-sm;
+
+    font-size: $text-sm;
+    color: $color-text-muted;
+}
+
+/* ===========================
+   GET STARTED
+=========================== */
+
+.steps {
     display: flex;
-    gap: $space-md;
+    flex-direction: column;
+    gap: $space-lg;
+}
+
+.step {
+    display: flex;
+    align-items: flex-start;
+    gap: $space-lg;
+
+    padding: $space-lg;
+
+    border: 1px solid $color-border;
+    border-radius: $radius;
+
+    background: $color-surface;
+
+    transition:
+        transform .18s ease,
+        border-color .18s ease;
+
+    &:hover {
+        transform: translateY(-2px);
+        border-color: $color-accent;
+    }
+}
+
+.step-number {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 40px;
+    height: 40px;
+
+    flex-shrink: 0;
+
+    border-radius: 50%;
+
+    background: $color-bg;
+    border: 1px solid $color-border;
+
+    font-weight: $weight-bold;
+}
+
+.step-content {
+    h3 {
+        margin: 0;
+        font-size: $text-base;
+        font-weight: $weight-semibold;
+    }
+
+    p {
+        margin: $space-xs 0 0;
+        color: $color-text-muted;
+        line-height: 1.6;
+    }
+}
+
+/* ===========================
+   RESPONSIVE
+=========================== */
+
+@media (max-width: 768px) {
+    .hero {
+        padding-block: $space-xl;
+    }
+
+    .hero-actions {
+        flex-direction: column;
+    }
+
+    .hero-actions .btn {
+        width: 100%;
+    }
+
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .step {
+        gap: $space-md;
+        padding: $space-md;
+    }
 }

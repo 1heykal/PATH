@@ -45,16 +45,19 @@ export class LoginComponent {
     );
   }
 
-  // validateForm() {
-  //   const errors: string[] = [];
+  clicks = 0;
+  private router = inject(Router);
 
-  //   if (this.accessModel.Email.trim() === '') {
-  //     errors.push('Email is required.');
-  //   }
-  //   if (this.accessModel.Password.trim() === '') {
-  //     errors.push('Password is required.');
-  //   }
-  //   this.errorMessage.set(errors.length > 0 ? errors : null);
-  //   return errors.length === 0;
-  // }
+  logoClicked() {
+    this.clicks++;
+
+    if (this.clicks >= 5) {
+      this.router.navigate(['/secret-path']);
+      this.clicks = 0;
+    }
+
+    setTimeout(() => {
+      this.clicks = 0;
+    }, 2000);
+  }
 }

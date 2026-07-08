@@ -1,4 +1,4 @@
-@import '../../styles/variables';
+@import '../../../../styles/variables';
 
 .project-grid {
     display: grid;
@@ -7,19 +7,90 @@
 }
 
 .project-card {
-    h3 {
-        font-size: $text-lg;
-        font-weight: $weight-semibold;
-        margin-bottom: $space-xs;
-        color: $color-text;
-    }
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 
-    .description {
-        color: $color-text-muted;
-        font-size: $text-sm;
-        display: -webkit-box;
-        -webkit-line-clamp: 2;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
+    min-height: 180px;
+
+    padding: $space-lg;
+
+    background: $color-surface;
+    border: 1px solid $color-border;
+    border-radius: $radius;
+    box-shadow: $shadow-sm;
+
+    text-decoration: none;
+    color: inherit;
+
+    transition:
+        transform .18s ease,
+        border-color .18s ease,
+        box-shadow .18s ease;
+
+    &:hover {
+        transform: translateY(-2px);
+        border-color: $color-accent;
+        box-shadow: $shadow-sm;
     }
+}
+
+.project-content {
+    display: flex;
+    flex-direction: column;
+    gap: $space-sm;
+}
+
+.project-card h3 {
+    margin: 0;
+    font-size: $text-lg;
+    font-weight: $weight-semibold;
+    color: $color-text;
+}
+
+.description {
+    margin: 0;
+    color: $color-text-muted;
+    font-size: $text-sm;
+    line-height: 1.5;
+
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    margin-top: $space-xl;
+    padding-top: $space-md;
+
+    border-top: 1px solid $color-border;
+
+    font-size: $text-sm;
+    color: $color-text-muted;
+
+    gap: $space-md;
+}
+
+.creator {
+    font-weight: $weight-medium;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.date {
+    flex-shrink: 0;
+}
+
+.empty-state {
+    padding: $space-2xl;
+    text-align: center;
+    color: $color-text-muted;
+    border: 1px dashed $color-border;
+    border-radius: $radius;
 }

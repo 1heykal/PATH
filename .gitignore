@@ -89,3 +89,4 @@ _ReSharper*/
 
 *.mdf
 *.ldf
+/backend/PATH.API/appsettings.Development.json

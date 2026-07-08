@@ -80,7 +80,8 @@ namespace PATH.Infrastructure
         // Login User -> Access & Refresh Tokens
         public async Task<(string accessToken, string refreshToken, UserBasicInfo userInfo)> LoginUser(AccessModel model)
         {
-            var user = await _context.Users.AsNoTracking().FirstOrDefaultAsync(u => u.Email.Equals(model.Email) || u.Username.Equals(model.Email));
+            var user = await _context.Users.AsNoTracking()
+                .FirstOrDefaultAsync(u => u.Email.Equals(model.Email) || u.Username.Equals(model.Email));
             if (user is null || !BCrypt.Net.BCrypt.Verify(model.Password, user.PasswordHash)) throw new AppException("Invalid User Credentials.", 404);
 
             var newAccessToken = GenerateAccessToken(user);
@@ -99,15 +100,20 @@ namespace PATH.Infrastructure
             await _context.RefreshTokens.AddAsync(refreshToken);
             await _context.SaveChangesAsync();
 
-            var userInfo = new UserBasicInfo
-            {
-                Id = user.Id,
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                Email = user.Email,
-                BirthDate = user.BirthDate,
-                //  Role = user.Role
-            };
+
+            var userInfo = await _context.Users.AsNoTracking()
+                .Select(u => new UserBasicInfo
+                {
+                    Id = u.Id,
+                    FirstName = u.FirstName,
+                    LastName = u.LastName,
+                    Email = u.Email,
+                    BirthDate = u.BirthDate,
+                    TasksCount = u.Tasks.Count,
+                    OrganizationsCount = u.OrganizationMemberships.Count,
+                    ProjectsCount = u.ProjectMemberships.Count,
+                })
+                .FirstOrDefaultAsync(u => u.Id.Equals(user.Id));
 
             return (newAccessToken, newRefreshToken, userInfo);
 

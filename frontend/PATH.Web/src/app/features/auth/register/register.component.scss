@@ -1,0 +1,138 @@
+@import '../../../../styles/variables';
+
+.auth-layout {
+    min-height: calc(100vh - 72px);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: $space-2xl $space-lg;
+}
+
+.auth-container {
+    width: 100%;
+    max-width: 620px;
+}
+
+.auth-header {
+    text-align: center;
+    margin-bottom: $space-xl;
+
+    h1 {
+        margin: $space-md 0 $space-sm;
+
+        font-size: $text-3xl;
+        font-weight: $weight-bold;
+        letter-spacing: -.02em;
+    }
+
+    .auth-subtitle {
+        max-width: 460px;
+        margin: 0 auto;
+
+        font-size: $text-base;
+        line-height: 1.7;
+
+        color: $color-text-muted;
+    }
+}
+
+.auth-brand {
+    display: inline-block;
+
+    font-size: $text-xl;
+    font-weight: $weight-bold;
+    letter-spacing: .08em;
+
+    color: $color-text;
+
+    text-decoration: none;
+
+    transition: color .2s ease;
+
+    &:hover {
+        color: $color-accent;
+    }
+}
+
+.auth-card {
+    padding: $space-2xl;
+
+    background: $color-surface;
+
+    border: 1px solid $color-border;
+    border-radius: $radius;
+
+    box-shadow: $shadow-sm;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: $space-lg;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: $space-md;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: $space-xs;
+}
+
+.form-label {
+    font-weight: $weight-medium;
+}
+
+.form-group input {
+    height: 46px;
+}
+
+.btn-block {
+    width: 100%;
+    margin-top: $space-sm;
+}
+
+.alert {
+    margin: 0;
+}
+
+.auth-footer {
+    margin-top: $space-xl;
+
+    text-align: center;
+
+    color: $color-text-muted;
+
+    a {
+        font-weight: $weight-semibold;
+        text-decoration: none;
+
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+}
+
+@media (max-width: 640px) {
+    .auth-layout {
+        padding: $space-xl $space-md;
+    }
+
+    .auth-card {
+        padding: $space-lg;
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+
+    .auth-header h1 {
+        font-size: 2rem;
+    }
+}

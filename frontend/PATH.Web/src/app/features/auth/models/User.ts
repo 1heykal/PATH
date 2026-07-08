@@ -5,4 +5,7 @@ export interface User {
   email: string;
   birthDate: Date;
   role: string;
+  organizationsCount: number;
+  projectsCount: number;
+  tasksCount: number;
 }

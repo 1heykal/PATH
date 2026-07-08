@@ -1,128 +1,299 @@
 @if (isLoading()) {
 <app-spinner></app-spinner>
 } @else {
+
 @if (project(); as p) {
+
 <div class="project-detail">
 
     <div class="page-header">
         <div>
             <h2>{{ p.name }}</h2>
-            <p class="subtitle">{{ p.description || 'No description' }}</p>
+            <p class="subtitle">
+                {{ p.description || 'No description provided.' }}
+            </p>
         </div>
-        <button class="btn btn-primary" (click)="showCreateTask.set(true)" [disabled]="!userAllowedToCreateTask()">
+
+        <button
+            class="btn btn-primary"
+            (click)="showCreateTask.set(true)"
+            [disabled]="!userAllowedToCreateTask()">
+
             + New Task
+
         </button>
     </div>
 
     <div class="meta">
         <span>Created by <strong>{{ p.creatorName }}</strong></span>
-        <span>{{ p.createdAt | date: 'mediumDate' }}</span>
+        <span>{{ p.createdAt | date:'mediumDate' }}</span>
     </div>
 
     <div class="page-nav">
-        <a class="back-link" [href]="'/organizations/' + p.organizationId">← Back to organization</a>
+        <a
+            class="back-link"
+            [href]="'/organizations/' + p.organizationId">
+
+            ← Back to organization
+
+        </a>
     </div>
 
     @if (showCreateTask()) {
-    <app-create-task [projectId]="p.id" [members]="p.members" (closed)="showCreateTask.set(false)"
+    <app-create-task
+        [projectId]="p.id"
+        [members]="p.members"
+        (closed)="showCreateTask.set(false)"
         (taskCreated)="onTaskCreated()" />
     }
 
-    <div class="section">
-        <h3>Members</h3>
-        @if (canAddProjectMembers()) {
-        <div class="member-actions card">
-            <h4>Add Project Member</h4>
-            <div class="member-actions-row">
-                <select class="member-select" (focus)="loadOrgMembers()" [(ngModel)]="addedMemberId">
-                    <option value="">Select a member</option>
-                    <option *ngFor="let member of organizationMembers" [value]="member.userId">{{ member.name }}</option>
-                </select>
-                <button class="btn btn-primary member-add-button" (click)="addMemberToProject()"
-                    [disabled]="!addedMemberId">Add member</button>
-            </div>
-        </div>
-        }
-        @if (p.members.length > 0) {
-        <div class="members-list">
-            @for (member of p.members; track member.memberId) {
-            <span class="member-badge member-pill">{{ member.memberName }}</span>
-            }
-        </div>
-        } @else {
-        <p class="muted">No members yet.</p>
-        }
-    </div>
+    <hr class="section-divider">
 
     <div class="section">
-        <h3>Tasks</h3>
-        @if (p.tasks.length > 0) {
-        <div class="task-list">
-            @for (task of p.tasks; track task.id) {
-            <div class="task-card card">
-                <div class="task-header">
-                    <strong>{{ task.title }}</strong>
-                    <span class="badge" [class]="'badge-' + task.status.toLowerCase()">
-                        {{ task.status }}
-                    </span>
-                </div>
-                <p class="task-meta">
-                    Priority: <strong>{{ task.priority }}</strong> |
-                    Due: {{ task.dueDate | date: 'mediumDate' }}
+
+        <div class="section-header">
+            <div>
+                <h3>Members</h3>
+                <p class="subtitle">
+                    {{ p.members.length }} member{{ p.members.length === 1 ? '' : 's' }}
                 </p>
+            </div>
+        </div>
+
+        @if (p.members.length > 0) {
+
+        <div class="members-list">
+            @for (member of p.members; track member.memberId) {
+            <span class="member-badge member-pill">
+                {{ member.memberName }}
+            </span>
+            }
+        </div>
+
+        } @else {
+
+        <p class="muted">No members yet.</p>
+
+        }
+
+        @if (canAddProjectMembers()) {
+
+        <hr class="section-divider">
+
+        <div class="member-actions">
+
+            <div class="member-actions-header">
+                <h4>Add Project Member</h4>
+                <p>Select an organization member to add to this project.</p>
+            </div>
+
+            <div class="member-actions-row">
+
+                <select
+                    class="member-select"
+                    (focus)="loadOrgMembers()"
+                    [(ngModel)]="addedMemberId">
+
+                    <option value="">Select a member</option>
+
+                    <option
+                        *ngFor="let member of organizationMembers"
+                        [value]="member.userId">
+
+                        {{ member.name }}
+
+                    </option>
+
+                </select>
+
+                <button
+                    class="btn btn-primary member-add-button"
+                    (click)="addMemberToProject()"
+                    [disabled]="!addedMemberId">
+
+                    Add Member
+
+                </button>
+
+            </div>
+
+        </div>
+
+        }
+
+    </div>
+
+    <hr class="section-divider">
+
+    <div class="section">
+
+        <div class="section-header">
+            <div>
+                <h3>Tasks</h3>
+                <p class="subtitle">
+                    {{ p.tasks.length }} task{{ p.tasks.length === 1 ? '' : 's' }}
+                </p>
+            </div>
+        </div>
+
+        @if (p.tasks.length > 0) {
+
+        <div class="task-list">
+
+            @for (task of p.tasks; track task.id) {
+
+            <div class="task-card">
+
+                <div class="task-header">
+
+                    <strong>{{ task.title }}</strong>
+
+                    <span
+                        class="badge"
+                        [class]="'badge-' + task.status.toLowerCase()">
+
+                        {{ task.status }}
+
+                    </span>
+
+                </div>
+
+                <p class="task-meta">
+                    Priority:
+                    <strong>{{ task.priority }}</strong>
+                    •
+                    Due:
+                    {{ task.dueDate | date:'mediumDate' }}
+                </p>
+
                 <div class="task-controls">
+
                     <div class="control-group">
-                        <label class="form-label">Status</label>
-                        <select [(ngModel)]="task.status" (change)="updateTaskStatus(task.id, task.status)">
+
+                        <label class="form-label">
+                            Status
+                        </label>
+
+                        <select
+                            [(ngModel)]="task.status"
+                            (change)="updateTaskStatus(task.id, task.status)">
+
                             <option value="Todo">Todo</option>
                             <option value="InProgress">In Progress</option>
                             <option value="Done">Done</option>
+
                         </select>
+
                     </div>
+
                     <div class="control-group">
-                        <label class="form-label">Assigned to</label>
-                        <select [(ngModel)]="task.assignedToId" (change)="assignTaskToUser(task.id, task.assignedToId)"
+
+                        <label class="form-label">
+                            Assigned to
+                        </label>
+
+                        <select
+                            [(ngModel)]="task.assignedToId"
+                            (change)="assignTaskToUser(task.id, task.assignedToId)"
                             [disabled]="!userAllowedToCreateTask()">
+
                             @for (member of p.members; track member.memberId) {
-                            <option [value]="member.memberId">{{ member.memberName }}</option>
+                            <option [value]="member.memberId">
+                                {{ member.memberName }}
+                            </option>
                             }
+
                         </select>
+
                     </div>
+
                     @if (canDeleteTask()) {
+
                     <div class="control-group task-actions">
+
                         <label class="form-label">&nbsp;</label>
-                        <button type="button" class="btn btn-ghost btn-danger" (click)="openDeleteTaskConfirm(task.id)">
+
+                        <button
+                            type="button"
+                            class="btn btn-ghost btn-danger"
+                            (click)="openDeleteTaskConfirm(task.id)">
+
                             Delete
+
                         </button>
+
                     </div>
+
                     }
+
                 </div>
+
             </div>
+
             }
+
         </div>
+
         } @else {
+
         <div class="empty-state">
-            <p>No tasks yet. Create the first one.</p>
+            <p>No tasks yet. Create the first task.</p>
         </div>
+
         }
+
     </div>
 
 </div>
 
 @if (deleteConfirmTaskId()) {
-<div class="modal-overlay" (click)="closeDeleteTaskConfirm()">
-    <div class="modal delete-confirm-modal" (click)="$event.stopPropagation()">
+
+<div
+    class="modal-overlay"
+    (click)="closeDeleteTaskConfirm()">
+
+    <div
+        class="modal delete-confirm-modal"
+        (click)="$event.stopPropagation()">
+
         <h3>Delete task?</h3>
-        <p class="muted">This task will be removed permanently. This action cannot be undone.</p>
+
+        <p class="muted">
+            This task will be removed permanently.
+            This action cannot be undone.
+        </p>
 
         <div class="form-actions delete-confirm-actions">
-            <button type="button" class="btn btn-danger" (click)="confirmDeleteTask()">Delete task</button>
-            <button type="button" class="btn btn-secondary" (click)="closeDeleteTaskConfirm()">Cancel</button>
+
+            <button
+                type="button"
+                class="btn btn-danger"
+                (click)="confirmDeleteTask()">
+
+                Delete task
+
+            </button>
+
+            <button
+                type="button"
+                class="btn btn-secondary"
+                (click)="closeDeleteTaskConfirm()">
+
+                Cancel
+
+            </button>
+
         </div>
+
     </div>
+
 </div>
+
 }
+
 } @else {
+
 <p class="muted">Project not found.</p>
+
 }
 }

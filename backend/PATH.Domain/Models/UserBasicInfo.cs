@@ -15,5 +15,11 @@ namespace PATH.Domain.Models
 
         public DateOnly BirthDate { get; set; }
 
+        public int TasksCount { get; set; } = 0;
+
+        public int OrganizationsCount { get; set; } = 0;
+
+        public int ProjectsCount { get; set; } = 0;
+
     }
 }

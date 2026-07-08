@@ -84,4 +84,19 @@ export const routes: Routes = [
       ),
     canActivate: [guestGuard],
   },
+  {
+    path: 'about',
+    loadComponent: () =>
+      import('./features/landing-page/landing-page.component').then(
+        (m) => m.LandingPageComponent,
+      ),
+    canActivate: [guestGuard],
+  },
+  {
+    path: 'secret-path',
+    loadComponent: () =>
+      import('./features/secret-page/secret-page.component').then(
+        (m) => m.SecretPageComponent,
+      ),
+  },
 ];
