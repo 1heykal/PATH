@@ -5,8 +5,15 @@ using PATH.Infrastructure;
 using Scalar.AspNetCore;
 using System.Text;
 using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.HttpOverrides;
 
 var builder = WebApplication.CreateBuilder(args);
+
+
+builder.Services.Configure<ForwardedHeadersOptions>(options =>
+{
+    options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+});
 
 // Add services to the container.
 
@@ -91,7 +98,7 @@ app.MapScalarApiReference(options =>
 });
 
 
-
+app.UseForwardedHeaders();
 app.UseHttpsRedirection();
 
 app.UseCors("CorsPolicy");
