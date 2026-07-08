@@ -73,20 +73,19 @@ var app = builder.Build();
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.MapOpenApi();
-    app.MapScalarApiReference(options =>
-    {
-        options.Title = "PATH API";
-        options.AddPreferredSecuritySchemes("Bearer")
-        .AddHttpAuthentication("Bearer", auth =>
-        {
-            auth.Token = "your-jwt-token";
-        });
-    });
 
-}
+app.MapOpenApi();
+app.MapScalarApiReference(options =>
+{
+    options.Title = "PATH API";
+    options.AddPreferredSecuritySchemes("Bearer")
+    .AddHttpAuthentication("Bearer", auth =>
+    {
+        auth.Token = "your-jwt-token";
+    });
+});
+
+
 
 app.UseHttpsRedirection();
 
