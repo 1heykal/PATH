@@ -48,7 +48,11 @@ builder.Services.AddCors(options =>
             "http://localhost:4200",
             "https://localhost:7129",
             "https://pathapp.up.railway.app",
-            "http://pathapp.up.railway.app"
+            "http://pathapp.up.railway.app",
+            "https://1path.vercel.app",
+            "https://path-pathdevs.vercel.app",
+            "https://path-git-master-pathdevs.vercel.app",
+            "https://path-53m2k0bhq-pathdevs.vercel.app"
             )
         .AllowAnyHeader()
         .AllowAnyMethod()
