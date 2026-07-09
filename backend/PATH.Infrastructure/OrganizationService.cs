@@ -141,7 +141,7 @@ namespace PATH.Infrastructure
                     Name = $"{m.User.FirstName} {m.User.LastName}",
                     Id = m.UserId,
                     JoinedAt = m.JoinedAt,
-                    Email = user.Email
+                    Email = m.User.Email
 
                 }).ToList(),
                 Projects = organization.Projects.Select(p => new ProjectBasicInfo
