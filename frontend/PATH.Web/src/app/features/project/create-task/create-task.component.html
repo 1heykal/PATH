@@ -37,24 +37,28 @@
                 </select>
             </div>
 
+
             @if(successMessage){
             <p class="alert alert-success">{{ successMessage }}</p>
             }
 
-            <div class="form-actions">
-                <button type="button" class="btn btn-primary" (click)="createTask()" [disabled]="!isFormValid()">Create</button>
-                <button type="button" class="btn btn-ghost" (click)="closed.emit()">Cancel</button>
-            </div>
-
             @if(errorMessage(); as errors) {
             @if(errors.length > 0) {
-            <ul class="alert alert-error modal-error">
+            <ul class="alert alert-error">
                 @for (error of errors; track error) {
                 <li>{{ error }}</li>
                 }
             </ul>
             }
             }
+
+            <div class="form-actions">
+                <button type="button" class="btn btn-primary" (click)="createTask()"
+                    [disabled]="!isFormValid()">Create</button>
+                <button type="button" class="btn btn-ghost" (click)="closed.emit()">Cancel</button>
+            </div>
+
+
         </form>
     </div>
 </div>
