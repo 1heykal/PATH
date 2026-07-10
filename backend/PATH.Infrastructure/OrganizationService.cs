@@ -156,6 +156,29 @@ namespace PATH.Infrastructure
             };
         }
 
+        public async Task<UserOrgMembership> GetUserOrgMembership(Guid userId, Guid organizationId)
+        {
+            var membership = await _context.OrganizationMembers
+                .Include(om => om.User)
+                .FirstOrDefaultAsync(om => om.UserId == userId && om.OrganizationId == organizationId);
+
+            if (membership is null)
+                throw new AppException("User is not a member of the organization.", 404);
+
+            return new UserOrgMembership
+            {
+                OrganizationId = membership.OrganizationId,
+                UserId = membership.UserId,
+                Role = membership.Role,
+                Permissions = new UserOrgPermissions
+                {
+                    CanCreateProject = membership.Role == OrganizationRole.Admin || membership.Role == OrganizationRole.Manager,
+                    CanAddMembers = membership.Role == OrganizationRole.Admin,
+                    CanAssignTasks = membership.Role == OrganizationRole.Admin || membership.Role == OrganizationRole.Manager,
+                },
+            };
+        }
+
         public async Task<List<OrganizationMemberBasicInfo>> GetOrganizationMembers(Guid authorId, Guid orgId)
         {
             var membership = await _context.OrganizationMembers

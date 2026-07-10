@@ -64,10 +64,12 @@ export class OrganizationComponent {
       .subscribe({
         next: () => {
           this.memberEmail = '';
+          this.errorMessage = null;
           this.successMessage = 'Member added successfully!';
           this.getOrganization(this.organizationId);
         },
         error: (error) => {
+          this.successMessage = null;
           this.errorMessage = error.error?.message || 'Failed to add member.';
         },
       });

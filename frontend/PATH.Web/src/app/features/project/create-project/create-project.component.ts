@@ -1,4 +1,4 @@
-import { Component, inject, input, signal } from '@angular/core';
+import { Component, computed, inject, input, signal } from '@angular/core';
 import { ProjectService } from '../services/project.service';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -15,10 +15,6 @@ import { AuthService } from '../../../core/auth/auth.service';
 export class CreateProjectComponent {
   private projectService = inject(ProjectService);
 
-  private userRole = inject(AuthService).userCurrentOrgRole();
-
-  userAllowedToCreateProject =
-    this.userRole === 'Admin' || this.userRole === 'Manager';
   private router = inject(Router);
 
   successMessage: string | null = null;
@@ -50,10 +46,28 @@ export class CreateProjectComponent {
       },
       error: (err) => {
         this.errorMessage.set(
-          err.error?.message || 'Project creation failed. Please try again.',
+          this.normalizeErrors(
+            err.error?.message,
+            'Project creation failed. Please try again.',
+          ),
         );
       },
     });
+  }
+
+  private normalizeErrors(
+    error: string | string[] | undefined,
+    fallback: string,
+  ) {
+    if (Array.isArray(error)) {
+      return error.length > 0 ? error : [fallback];
+    }
+
+    if (typeof error === 'string' && error.trim() !== '') {
+      return [error];
+    }
+
+    return [fallback];
   }
 
   isFormValid() {

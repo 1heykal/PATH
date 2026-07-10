@@ -1,16 +1,50 @@
-<div class="form-card">
-    <h2>Create Organization</h2>
+<div class="form-layout">
 
-    <label>
-        Organization Name
-        <input type="text" [(ngModel)]="orgName" placeholder="e.g. Acme Corp" />
-    </label>
+    <div class="form-header">
 
-    @if (errorMessage) {
-    <p class="error">{{ errorMessage }}</p>
-    }
+        <h1>Create Organization</h1>
 
-    <button class="primary" (click)="createOrganization()" [disabled]="!orgName.trim()">
-        Create
-    </button>
+        <p class="form-subtitle">
+            Organizations are where your teams, projects, and collaboration begin.
+        </p>
+
+    </div>
+
+    <div class="form-card">
+
+        <div class="form-group">
+
+            <label class="form-label" for="organizationName">
+                Organization Name
+            </label>
+
+            <input id="organizationName" type="text" [(ngModel)]="orgName" placeholder="e.g. Acme Corporation">
+
+        </div>
+
+        @if (errorMessage) {
+        <p class="error alert alert-error">
+            {{ errorMessage }}
+        </p>
+        }
+
+        <div class="form-actions">
+            <button class="btn btn-primary" (click)="createOrganization()" [disabled]="!orgName.trim()">
+
+                Create Organization
+
+            </button>
+
+            <a routerLink="/organizations" class="btn btn-secondary">
+
+                Cancel
+
+            </a>
+
+
+
+        </div>
+
+    </div>
+
 </div>

@@ -1,0 +1,75 @@
+@import '../../../../styles/variables';
+
+.form-layout {
+    max-width: 600px;
+}
+
+.form-header {
+    margin-bottom: $space-xl;
+
+    h1 {
+        margin: 0 0 $space-sm;
+
+        font-size: $text-3xl;
+        font-weight: $weight-bold;
+        letter-spacing: -.02em;
+    }
+}
+
+.form-subtitle {
+    margin: 0;
+
+    color: $color-text-muted;
+
+    font-size: $text-base;
+
+    line-height: 1.7;
+
+    max-width: 500px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+
+    gap: $space-xs;
+}
+
+.form-label {
+    font-weight: $weight-medium;
+}
+
+.form-group input {
+    height: 46px;
+}
+
+.error {
+    margin-top: $space-md;
+}
+
+.form-actions {
+    margin-top: $space-xl;
+
+    display: flex;
+    justify-content: flex-end;
+}
+
+.form-actions .btn {
+    min-width: 180px;
+}
+
+@media (max-width: 640px) {
+
+    .form-card {
+        padding: $space-lg;
+    }
+
+    .form-actions {
+        justify-content: stretch;
+    }
+
+    .form-actions .btn {
+        width: 100%;
+    }
+
+}

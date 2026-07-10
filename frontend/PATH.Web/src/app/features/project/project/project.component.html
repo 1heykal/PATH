@@ -14,10 +14,7 @@
             </p>
         </div>
 
-        <button
-            class="btn btn-primary"
-            (click)="showCreateTask.set(true)"
-            [disabled]="!userAllowedToCreateTask()">
+        <button class="btn btn-primary" (click)="showCreateTask.set(true)" [disabled]="!userAllowedToCreateTask()">
 
             + New Task
 
@@ -30,9 +27,7 @@
     </div>
 
     <div class="page-nav">
-        <a
-            class="back-link"
-            [href]="'/organizations/' + p.organizationId">
+        <a class="back-link" [href]="'/organizations/' + p.organizationId">
 
             ← Back to organization
 
@@ -40,10 +35,7 @@
     </div>
 
     @if (showCreateTask()) {
-    <app-create-task
-        [projectId]="p.id"
-        [members]="p.members"
-        (closed)="showCreateTask.set(false)"
+    <app-create-task [projectId]="p.id" [members]="p.members" (closed)="showCreateTask.set(false)"
         (taskCreated)="onTaskCreated()" />
     }
 
@@ -89,16 +81,11 @@
 
             <div class="member-actions-row">
 
-                <select
-                    class="member-select"
-                    (focus)="loadOrgMembers()"
-                    [(ngModel)]="addedMemberId">
+                <select class="member-select" (focus)="loadOrgMembers()" [(ngModel)]="addedMemberId">
 
                     <option value="">Select a member</option>
 
-                    <option
-                        *ngFor="let member of organizationMembers"
-                        [value]="member.userId">
+                    <option *ngFor="let member of organizationMembers" [value]="member.userId">
 
                         {{ member.name }}
 
@@ -106,9 +93,7 @@
 
                 </select>
 
-                <button
-                    class="btn btn-primary member-add-button"
-                    (click)="addMemberToProject()"
+                <button class="btn btn-primary member-add-button" (click)="addMemberToProject()"
                     [disabled]="!addedMemberId">
 
                     Add Member
@@ -148,9 +133,7 @@
 
                     <strong>{{ task.title }}</strong>
 
-                    <span
-                        class="badge"
-                        [class]="'badge-' + task.status.toLowerCase()">
+                    <span class="badge" [class]="'badge-' + task.status.toLowerCase()">
 
                         {{ task.status }}
 
@@ -174,9 +157,9 @@
                             Status
                         </label>
 
-                        <select
-                            [(ngModel)]="task.status"
-                            (change)="updateTaskStatus(task.id, task.status)">
+                        <select [(ngModel)]="task.status" (change)="updateTaskStatus(task.id, task.status)"
+                            [disabled]="!userAllowedToUpdateStatus() && task.assignedToId !== currentUserId ">
+
 
                             <option value="Todo">Todo</option>
                             <option value="InProgress">In Progress</option>
@@ -192,9 +175,7 @@
                             Assigned to
                         </label>
 
-                        <select
-                            [(ngModel)]="task.assignedToId"
-                            (change)="assignTaskToUser(task.id, task.assignedToId)"
+                        <select [(ngModel)]="task.assignedToId" (change)="assignTaskToUser(task.id, task.assignedToId)"
                             [disabled]="!userAllowedToCreateTask()">
 
                             @for (member of p.members; track member.memberId) {
@@ -213,10 +194,7 @@
 
                         <label class="form-label">&nbsp;</label>
 
-                        <button
-                            type="button"
-                            class="btn btn-ghost btn-danger"
-                            (click)="openDeleteTaskConfirm(task.id)">
+                        <button type="button" class="btn btn-ghost btn-danger" (click)="openDeleteTaskConfirm(task.id)">
 
                             Delete
 
@@ -248,13 +226,9 @@
 
 @if (deleteConfirmTaskId()) {
 
-<div
-    class="modal-overlay"
-    (click)="closeDeleteTaskConfirm()">
+<div class="modal-overlay" (click)="closeDeleteTaskConfirm()">
 
-    <div
-        class="modal delete-confirm-modal"
-        (click)="$event.stopPropagation()">
+    <div class="modal delete-confirm-modal" (click)="$event.stopPropagation()">
 
         <h3>Delete task?</h3>
 
@@ -265,19 +239,13 @@
 
         <div class="form-actions delete-confirm-actions">
 
-            <button
-                type="button"
-                class="btn btn-danger"
-                (click)="confirmDeleteTask()">
+            <button type="button" class="btn btn-danger" (click)="confirmDeleteTask()">
 
                 Delete task
 
             </button>
 
-            <button
-                type="button"
-                class="btn btn-secondary"
-                (click)="closeDeleteTaskConfirm()">
+            <button type="button" class="btn btn-secondary" (click)="closeDeleteTaskConfirm()">
 
                 Cancel
 

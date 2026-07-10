@@ -51,7 +51,7 @@ namespace PATH.API.Controllers
         [HttpGet("{id}/members")]
         public async Task<ActionResult<List<OrganizationMemberBasicInfo>>> GetOrganizationMembers(Guid id)
         {
-            var response = await _organizationService.GetOrganizationMembers(GetAuthorId(),id);
+            var response = await _organizationService.GetOrganizationMembers(GetAuthorId(), id);
             return Ok(response);
         }
 
@@ -60,6 +60,13 @@ namespace PATH.API.Controllers
         {
             await _organizationService.RemoveMemberFromOrganization(GetAuthorId(), organizationId, userId);
             return NoContent();
+        }
+
+        [HttpGet("{id}/me")]
+        public async Task<ActionResult<UserOrgMembership>> GetUserOrgMembership(Guid id)
+        {
+            var response = await _organizationService.GetUserOrgMembership(GetAuthorId(), id);
+            return Ok(response);
         }
 
         private Guid GetAuthorId() => Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);

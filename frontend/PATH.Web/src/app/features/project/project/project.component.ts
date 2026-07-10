@@ -36,7 +36,13 @@ export class ProjectComponent implements OnInit {
   private taskService = inject(TaskService);
 
   private userRole = inject(AuthService).userCurrentOrgRole;
+  public currentUserId = inject(AuthService).currentUser()?.id;
+
   userAllowedToCreateTask = computed(
+    () => this.userRole() === 'Admin' || this.userRole() === 'Manager',
+  );
+
+  userAllowedToUpdateStatus = computed(
     () => this.userRole() === 'Admin' || this.userRole() === 'Manager',
   );
   canDeleteTask = computed(() => this.userRole() === 'Admin');
@@ -79,7 +85,6 @@ export class ProjectComponent implements OnInit {
             this.loadProject();
             this.addedMemberId = null;
           },
-        
         });
     }
   }
@@ -162,11 +167,11 @@ export class ProjectComponent implements OnInit {
           const projectMemberIds = this.project()!.members.map(
             (m) => m.memberId,
           );
-         
+
           this.organizationMembers = response.filter(
             (member) => !projectMemberIds.includes(member.userId),
           );
-         
+
           this.orgMembersLoaded = true;
         });
     }

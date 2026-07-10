@@ -5,6 +5,7 @@ import { environment } from '../../../../environments/environment';
 import { Organization } from '../models/Organization';
 import { OrganizationBasicInfo } from '../models/OrganizationBasicInfo';
 import { OrgMember } from '../models/OrgMember';
+import { UserOrgMembership } from '../models/UserOrgMembership';
 @Injectable({
   providedIn: 'root',
 })
@@ -35,5 +36,9 @@ export class OrganizationService {
       userEmail: userEmail,
       organizationId: organizationId,
     });
+  }
+
+  getCurrentUserOrgMembership(id: string) {
+    return this.http.get<UserOrgMembership>(`${this.API_URL}/${id}/me`);
   }
 }

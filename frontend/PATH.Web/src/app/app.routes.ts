@@ -10,12 +10,18 @@ import { roleGuard } from './core/auth/role.guard';
 import { LayoutComponent } from './core/layout/layout.component';
 import { OrganizationComponent } from './features/organization/organization/organization.component';
 import { OrganizationListComponent } from './features/organization/organization-list/organization-list.component';
+import { permissionGuard } from './core/auth/permission.guard';
 export const routes: Routes = [
   {
     path: '',
     component: LayoutComponent,
     canActivate: [authGuard],
     children: [
+      {
+        path: '',
+        redirectTo: 'dashboard',
+        pathMatch: 'full',
+      },
       {
         path: 'dashboard',
         loadComponent: () =>
@@ -57,6 +63,8 @@ export const routes: Routes = [
           import('./features/project/create-project/create-project.component').then(
             (m) => m.CreateProjectComponent,
           ),
+        canActivate: [permissionGuard],
+        data: { permission: 'canCreateProject' },
       },
       {
         path: 'projects/:id',
