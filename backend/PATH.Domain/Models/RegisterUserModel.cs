@@ -17,9 +17,10 @@ namespace PATH.Domain.Models
         public string LastName { get; set; }
 
 
-        [DataType(DataType.EmailAddress)]
         [Required]
         [MaxLength(100)]
+        [EmailAddress]
+
         public string Email { get; set; }
 
 
