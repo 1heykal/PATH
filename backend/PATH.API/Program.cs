@@ -6,6 +6,7 @@ using Scalar.AspNetCore;
 using System.Text;
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,6 +25,8 @@ builder.Services.AddControllers()
     }
 );
 
+
+
 builder.Services.AddOpenApi();
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -31,6 +34,10 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("Default"),
         x => x.MigrationsAssembly("PATH.Infrastructure"));
 });
+
+builder.Services.AddHealthChecks()
+    .AddDbContextCheck<ApplicationDbContext>();
+
 
 builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<UserService>();
@@ -86,8 +93,10 @@ builder.Services.AddEndpointsApiExplorer();
 
 var app = builder.Build();
 
+
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 
+app.MapHealthChecks("/health");
 // Configure the HTTP request pipeline.
 
 app.MapOpenApi();
