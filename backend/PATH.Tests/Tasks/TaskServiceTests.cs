@@ -158,9 +158,9 @@ namespace PATH.Tests.Tasks
 
             // Act
             var taskService = new TaskService(context, new UserService(context));
-            await taskService.UpdateTaskStatus(user.Id, task.Id, Status.InProgress);
+            await taskService.UpdateTaskStatus(user.Id, task.Id, Status.Done);
             // Assert
-            Assert.Equal(Status.InProgress, task.Status);
+            Assert.Equal(Status.Done, task.Status);
 
 
         }
