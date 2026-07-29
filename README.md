@@ -2,93 +2,192 @@
 
 # 🛤️ PATH
 
-**A full-stack team task management platform with organization-scoped workspaces and role-based access control.**
+**A full-stack team task management platform with organization-scoped workspaces, secure authentication, role-based access control, automated testing, and continuous integration.**
 
+[![CI](https://github.com/1heykal/PATH/actions/workflows/ci.yml/badge.svg)](https://github.com/1heykal/PATH/actions/workflows/ci.yml)
 [![Live Demo](https://img.shields.io/badge/Live_Demo-1path.vercel.app-4f46e5?style=for-the-badge)](https://1path.vercel.app)
-[![GitHub](https://img.shields.io/badge/GitHub-Repository-181717?style=for-the-badge&logo=github)](https://github.com/1heykal/PATH)
+[![GitHub](https://img.shields.io/badge/GitHub-Repository-181717?style=for-the-badge\&logo=github)](https://github.com/1heykal/PATH)
 
 </div>
 
 ---
 
-## 📸 Screenshots
+# 📖 Overview
+
+PATH is a full-stack collaboration platform that helps organizations manage projects and tasks through secure, role-based workspaces.
+
+Built with **ASP.NET Core** and **Angular**, it demonstrates modern backend engineering practices including JWT authentication, refresh token rotation, automated integration testing, Docker, and GitHub Actions CI.
+
+---
+
+# 📸 Screenshots
 
 <div align="center">
+
 <img src="./screenshots/login.png" width="45%" />
 <img src="./screenshots/dashboard.png" width="45%" />
 <img src="./screenshots/org.png" width="45%" />
 <img src="./screenshots/project.png" width="45%" />
+
 </div>
 
 ---
 
-## ✨ Features
+# ✨ Features
 
-| Feature                  | Description                                                                   |
-| ------------------------ | ----------------------------------------------------------------------------- |
-| 🔐 **Authentication**    | JWT access tokens, HttpOnly cookie refresh tokens, rotation & reuse detection |
-| 🏢 **Organizations**     | Users scoped to organizations, admins manage membership                       |
-| 🛡️ **Role-Based Access** | Admin, Manager, Member roles enforced backend-wide                            |
-| 📋 **Projects**          | Create and manage projects within your organization                           |
-| ✅ **Tasks**             | Create, assign, and track tasks with priority and status                      |
-| 🚦 **Route Guards**      | Auth, guest, and permission-based guards protecting every route               |
+| Feature                          | Description                                                                          |
+| -------------------------------- | ------------------------------------------------------------------------------------ |
+| 🔐 **Authentication**            | JWT access tokens with HttpOnly refresh cookies, token rotation, and reuse detection |
+| 🏢 **Organizations**             | Organization-scoped workspaces with isolated members and projects                    |
+| 🛡️ **Role-Based Authorization** | Admin, Manager, and Member permissions enforced across the application               |
+| 📋 **Projects**                  | Create and organize projects inside organizations                                    |
+| ✅ **Tasks**                      | Create, assign, update, and delete tasks with priority and status tracking           |
+| 🔄 **Silent Authentication**     | Automatic token refresh using Angular HTTP Interceptor                               |
+| 🚦 **Route Guards**              | Authentication, guest, and permission-based route protection                         |
 
 ---
 
-## 🛠️ Tech Stack
+# 🛠️ Tech Stack
 
 <div align="center">
 
-![.NET](https://img.shields.io/badge/.NET-512BD4?style=flat-square&logo=dotnet&logoColor=white)
-![C#](https://img.shields.io/badge/C%23-239120?style=flat-square&logo=csharp&logoColor=white)
-![Angular](https://img.shields.io/badge/Angular_18-DD0031?style=flat-square&logo=angular&logoColor=white)
-![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white)
-![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?style=flat-square&logo=postgresql&logoColor=white)
-![Docker](https://img.shields.io/badge/Docker-2496ED?style=flat-square&logo=docker&logoColor=white)
+![.NET 10](https://img.shields.io/badge/.NET_10-512BD4?style=for-the-badge\&logo=dotnet\&logoColor=white)
+![ASP.NET Core](https://img.shields.io/badge/ASP.NET_Core-512BD4?style=for-the-badge\&logo=dotnet\&logoColor=white)
+![C#](https://img.shields.io/badge/C%23-239120?style=for-the-badge\&logo=csharp\&logoColor=white)
+![Angular 18](https://img.shields.io/badge/Angular_18-DD0031?style=for-the-badge\&logo=angular\&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge\&logo=typescript\&logoColor=white)
+![SCSS](https://img.shields.io/badge/SCSS-CC6699?style=for-the-badge\&logo=sass\&logoColor=white)
+![Entity Framework Core](https://img.shields.io/badge/EF_Core-512BD4?style=for-the-badge\&logo=dotnet\&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?style=for-the-badge\&logo=postgresql\&logoColor=white)
+![SQL Server](https://img.shields.io/badge/SQL_Server-CC2927?style=for-the-badge\&logo=microsoftsqlserver\&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge\&logo=docker\&logoColor=white)
+![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-2088FF?style=for-the-badge\&logo=githubactions\&logoColor=white)
+![xUnit](https://img.shields.io/badge/xUnit-5C2D91?style=for-the-badge)
 
 </div>
 
-**Backend** — ASP.NET Core Web API, Entity Framework Core, PostgreSQL (production) / SQL Server (dev), JWT auth, Docker
-
-**Frontend** — Angular 18, TypeScript, SCSS, Signals for reactive state, custom HTTP Interceptor for silent token refresh
-
-**Deployment** — Backend on Railway, Frontend on Vercel
-
----
-
-## 📂 Project Structure
-
-```
-PATH/
-├── backend/
-│   ├── PATH.API/              # Web API, controllers, entry point
-│   ├── PATH.Application/      # Business logic, DTOs, exceptions
-│   ├── PATH.Domain/           # Entities, enums
-│   └── PATH.Infrastructure/   # EF Core, services, DbContext
-└── frontend/
-    └── PATH.Web/
-        └── src/
-            └── app/
-                ├── core/       # Guards, interceptors, auth service
-                ├── features/   # Projects, tasks, organizations, admin
-                └── shared/     # Reusable components, models, validators
-```
-
----
-
-## 🚀 Getting Started
-
-### Prerequisites
-
-- .NET 8 SDK
-- Node.js 20+
-- SQL Server (local dev)
-
 ### Backend
+
+* ASP.NET Core Web API
+* Entity Framework Core
+* PostgreSQL (Production)
+* SQL Server (Development)
+* JWT Authentication
+* Refresh Token Rotation & Reuse Detection
+* Docker
+
+### Frontend
+
+* Angular 18
+* TypeScript
+* SCSS
+* Angular Signals
+* Angular Router
+* HTTP Interceptors
+
+### DevOps & Quality
+
+* GitHub Actions
+* xUnit
+* In-Memory SQLite
+* Continuous Integration
+
+---
+
+# 🧪 Testing
+
+PATH includes integration tests covering the application's critical business rules and authorization behavior.
+
+### Covered Scenarios
+
+* Authentication
+* Task Creation
+* Task Assignment
+* Task Status Updates
+* Task Deletion
+* Authorization Rules
+
+### Testing Stack
+
+* xUnit
+* EF Core In-Memory SQLite
+
+Run the test suite:
 
 ```bash
 cd backend
+dotnet test
+```
+
+---
+
+# ⚙️ Continuous Integration
+
+Every push and pull request automatically triggers a GitHub Actions workflow that:
+
+* Restores dependencies
+* Builds the solution
+* Runs the integration test suite
+
+The CI pipeline ensures every commit is automatically validated before being merged.
+
+---
+
+# 🔑 Engineering Highlights
+
+* JWT Authentication with refresh token rotation and reuse detection
+* Role-based authorization (Admin, Manager, Member)
+* Organization-scoped workspaces
+* Integration testing with xUnit and In-Memory SQLite
+* Automated CI with GitHub Actions
+* Dockerized backend
+* Production deployment on Railway and Vercel
+
+---
+
+# 📂 Project Structure
+
+```text
+PATH
+│
+├── backend
+│   ├── PATH.API
+│   ├── PATH.Application
+│   ├── PATH.Domain
+│   ├── PATH.Infrastructure
+│   ├── PATH.Tests
+│   └── PATH.slnx
+│
+├── frontend
+│   └── PATH.Web
+│
+├── screenshots
+│
+└── README.md
+```
+
+---
+
+# 🚀 Getting Started
+
+## Prerequisites
+
+* .NET 10 SDK
+* Node.js 20+
+* SQL Server
+
+---
+
+## Backend
+
+```bash
+cd backend
+
 dotnet restore
+
+dotnet ef database update
+
+dotnet run --project PATH.API
 ```
 
 Update `appsettings.Development.json`:
@@ -96,35 +195,56 @@ Update `appsettings.Development.json`:
 ```json
 {
   "ConnectionStrings": {
-    "DefaultConnection": "Your SQL Server connection string"
+    "DefaultConnection": "YOUR_CONNECTION_STRING"
   },
   "Jwt": {
-    "SecretKey": "your-secret-key",
-    "Issuer": "your-issuer",
-    "Audience": "your-audience"
+    "SecretKey": "YOUR_SECRET_KEY",
+    "Issuer": "YOUR_ISSUER",
+    "Audience": "YOUR_AUDIENCE"
   }
 }
 ```
 
-```bash
-dotnet ef database update
-dotnet run --project PATH.API
+API:
+
+```
+https://localhost:7260
 ```
 
-API runs at `https://localhost:7260`
+---
 
-### Frontend
+## Frontend
 
 ```bash
 cd frontend/PATH.Web
+
 npm install
+
 ng serve
 ```
 
-App runs at `http://localhost:4200`
+Application:
+
+```
+http://localhost:4200
+```
+
+---
+
+# 🚀 Deployment
+
+| Component | Platform   |
+| --------- | ---------- |
+| Frontend  | Vercel     |
+| Backend   | Railway    |
+| Database  | PostgreSQL |
 
 ---
 
 <div align="center">
-Built by <a href="https://github.com/1heykal">Osama Heykal</a>
+
+### Built with ❤️ by **Osama Heykal**
+
+**ASP.NET Core • Angular • Full-Stack Developer**
+
 </div>
