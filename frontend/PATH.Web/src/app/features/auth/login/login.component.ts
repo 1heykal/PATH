@@ -1,19 +1,27 @@
 import { Component, inject, signal } from '@angular/core';
 import { AuthService } from '../../../core/auth/auth.service';
 import { Router } from '@angular/router';
-import { FormsModule } from '@angular/forms';
+import {
+  FormBuilder,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { AccessModel } from '../models/AccessModel';
+import { CommonModule } from '@angular/common';
+import { AppValidators } from '../../../shared/validators/app.validators';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [FormsModule, RouterLink],
+  imports: [FormsModule, ReactiveFormsModule, RouterLink, CommonModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
 })
 export class LoginComponent {
   private authService = inject(AuthService);
+  private fb = inject(FormBuilder);
   errorMessage = signal<string[] | null>(null);
 
   accessModel: AccessModel = {
@@ -21,17 +29,46 @@ export class LoginComponent {
     Password: '',
   };
 
+  loginForm = this.fb.group({
+    email: ['', AppValidators.email],
+    password: ['', AppValidators.password],
+  });
+
   login() {
+    if (this.loginForm.valid) {
+      this.accessModel = {
+        Email: this.loginForm.controls.email.value ?? '',
+        Password: this.loginForm.controls.password.value ?? '',
+      };
+    }
     this.authService.login(this.accessModel).subscribe({
       next: () => {
         this.errorMessage.set(null);
       },
       error: (err) => {
-        this.errorMessage.set([
-          err.error?.message || 'Login failed. Please try again.',
-        ]);
+        this.errorMessage.set(
+          this.normalizeErrors(
+            err.error?.message,
+            'Login failed. Please try again.',
+          ),
+        );
       },
     });
+  }
+
+  private normalizeErrors(
+    error: string | string[] | undefined,
+    fallback: string,
+  ) {
+    if (Array.isArray(error)) {
+      return error.length > 0 ? error : [fallback];
+    }
+
+    if (typeof error === 'string' && error.trim() !== '') {
+      return [error];
+    }
+
+    return [fallback];
   }
 
   isFormValid() {

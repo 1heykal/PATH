@@ -1,93 +1,71 @@
 <div class="auth-layout">
-
     <div class="auth-container">
-
         <div class="auth-header">
-
-            <a (click)="logoClicked()" class="auth-brand">
-                PATH
-            </a>
+            <a (click)="logoClicked()" class="auth-brand"> PATH </a>
 
             <h1>Welcome back</h1>
 
             <p class="auth-subtitle">
                 Sign in to continue managing your organizations, projects, and tasks.
             </p>
-
         </div>
 
         <div class="auth-card">
-
-            <form class="form" method="post" (ngSubmit)="login()">
-
+            <form [formGroup]="loginForm" class="form" method="post" (ngSubmit)="login()">
                 <div class="form-group">
+                    <label class="form-label" for="email">Email</label>
 
-                    <label class="form-label" for="email">
+                    <input formControlName="email" id="email" type="email" name="Email"
+                        placeholder="john@example.com" />
 
-                        Email
-
-                    </label>
-
-                    <input id="email" type="email" name="Email" placeholder="john@example.com"
-                        [(ngModel)]="accessModel.Email">
+                    @if(loginForm.get('email')?.invalid && loginForm.get('email')?.touched) {
+                    <div class="alert alert-error">
+                        <span *ngIf="loginForm.get('email')?.errors?.['required']">Email is required.</span>
+                        <span *ngIf="loginForm.get('email')?.errors?.['email']">Please enter a valid email
+                            address.</span>
+                    </div>
+                    }
 
                 </div>
 
                 <div class="form-group">
+                    <label class="form-label" for="password"> Password </label>
 
-                    <label class="form-label" for="password">
+                    <input formControlName="password" id="password" type="password" name="Password"
+                        placeholder="Enter your password" />
 
-                        Password
-
-                    </label>
-
-                    <input id="password" type="password" name="Password" placeholder="Enter your password"
-                        [(ngModel)]="accessModel.Password">
-
+                    @if(loginForm.get('password')?.invalid && loginForm.get('password')?.touched) {
+                    <div class="alert alert-error">
+                        <span *ngIf="loginForm.get('password')?.errors?.['required']">Password is required.</span>
+                        <span *ngIf="loginForm.get('password')?.errors?.['minlength']">Password must be at least 8
+                            characters long.</span>
+                        
+                    </div>
+                    }
                 </div>
 
                 @if (errorMessage(); as errors) {
                 @if (errors.length > 0) {
-
                 <ul class="alert alert-error">
-
                     @for (error of errors; track error) {
-
                     <li>{{ error }}</li>
-
                     }
-
                 </ul>
-
                 }
                 }
 
-                <button type="submit" class="btn btn-primary btn-block" [disabled]="!isFormValid()">
-
+                <button type="submit" class="btn btn-primary btn-block" [disabled]="!loginForm.valid">
                     Sign In
-
                 </button>
-
             </form>
-
         </div>
 
         <div class="auth-footer">
-
             <p>
-
                 Don't have an account?
 
-                <a routerLink="/register">
-
-                    Create one
-
-                </a>
-
+                <a routerLink="/register"> Create one </a>
             </p>
-
         </div>
-
     </div>
-
 </div>

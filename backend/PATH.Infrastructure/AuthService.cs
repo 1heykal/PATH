@@ -163,9 +163,9 @@ namespace PATH.Infrastructure
 
         // logout
 
-        public async Task LogoutUser(string refresshToken)
+        public async Task LogoutUser(string refreshToken)
         {
-            await _context.RefreshTokens.Where(rt => rt.Token.Equals(refresshToken)).ExecuteUpdateAsync(s => s.SetProperty(rt => rt.IsRevoked, true));
+          await _context.RefreshTokens.Where(rt => rt.Token.Equals(refreshToken)).ExecuteUpdateAsync(s => s.SetProperty(rt => rt.IsRevoked, true));
         }
 
 

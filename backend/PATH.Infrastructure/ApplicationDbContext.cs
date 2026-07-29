@@ -4,6 +4,16 @@ using System.Collections.Generic;
 using System.Text;
 using PATH.Domain.Entities;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Microsoft.Data.Sqlite;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using PATH.Application.Exceptions;
+using PATH.Domain.Entities;
+using PATH.Domain.Models;
+using PATH.Infrastructure;
+using System;
+using System.Collections.Generic;
+using System.Text;
 
 namespace PATH.Infrastructure
 {
@@ -109,6 +119,21 @@ namespace PATH.Infrastructure
 
 
             base.OnModelCreating(modelBuilder);
+        }
+
+        public static ApplicationDbContext GetSqliteContext()
+        {
+
+            var connection = new SqliteConnection("DataSource=:memory:");
+            connection.Open();
+
+            var options = new DbContextOptionsBuilder<ApplicationDbContext>()
+                .UseSqlite(connection)
+                .Options;
+            var context = new ApplicationDbContext(options);
+            context.Database.EnsureCreated();
+
+            return new ApplicationDbContext(options);
         }
 
 

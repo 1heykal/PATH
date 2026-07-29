@@ -1,13 +1,21 @@
 import { Component, inject, signal } from '@angular/core';
 import { RegisterUserModel } from '../models/RegisterUserModel';
 import { AuthService } from '../../../core/auth/auth.service';
-import { FormsModule } from '@angular/forms';
+import {
+  FormBuilder,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { passwordMatch } from '../../../shared/validators/password-match.validator';
+import { AppValidators } from '../../../shared/validators/app.validators';
 
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [FormsModule, RouterLink],
+  imports: [FormsModule, RouterLink, ReactiveFormsModule, CommonModule],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss',
 })
@@ -21,12 +29,34 @@ export class RegisterComponent {
     ConfirmPassword: '',
   };
 
+  private fb = inject(FormBuilder);
+  registerForm = this.fb.group(
+    {
+      firstName: ['', AppValidators.firstName],
+      lastName: ['', AppValidators.lastName],
+      dateOfBirth: ['', AppValidators.dateOfBirth],
+      email: ['', AppValidators.email],
+      password: ['', AppValidators.password],
+      confirmPassword: ['', AppValidators.password],
+    },
+    { validators: [passwordMatch] },
+  );
+
   private authService = inject(AuthService);
   private router = inject(Router);
 
   errorMessage = signal<string[] | null>(null);
 
   register() {
+    this.registerModel = {
+      FirstName: this.registerForm.controls.firstName.value ?? '',
+      DateOfBirth: this.registerForm.controls.dateOfBirth.value ?? '',
+      Email: this.registerForm.controls.email.value ?? '',
+      LastName: this.registerForm.controls.lastName.value ?? '',
+      Password: this.registerForm.controls.password.value ?? '',
+      ConfirmPassword: this.registerForm.controls.confirmPassword.value ?? '',
+    };
+
     const errors: string[] = [];
     if (this.registerModel.Password !== this.registerModel.ConfirmPassword) {
       errors.push('Passwords do not match.');
@@ -58,18 +88,6 @@ export class RegisterComponent {
     return this.registerModel.Password === this.registerModel.ConfirmPassword;
   }
 
-  isFormValid() {
-    return (
-      this.registerModel.FirstName.trim() !== '' &&
-      this.registerModel.LastName.trim() !== '' &&
-      this.registerModel.Email.trim() !== '' &&
-      this.registerModel.DateOfBirth.trim() !== '' &&
-      this.registerModel.Password.trim() !== '' &&
-      this.registerModel.ConfirmPassword.trim() !== '' &&
-      this.registerModel.Password === this.registerModel.ConfirmPassword
-    );
-  }
-
   private normalizeErrors(
     error: string | string[] | undefined,
     fallback: string,
@@ -84,35 +102,4 @@ export class RegisterComponent {
 
     return [fallback];
   }
-
-  // checkFormValidity() {
-  //   const errors: string[] = [];
-  //   if (this.registerModel.FirstName.trim() === '') {
-  //     errors.push('First name is required.');
-  //   }
-  //   if (this.registerModel.LastName.trim() === '') {
-  //     errors.push('Last name is required.');
-  //   }
-  //   if (this.registerModel.Email.trim() === '') {
-  //     errors.push('Email is required.');
-  //   }
-  //   if (this.registerModel.DateOfBirth.trim() === '') {
-  //     errors.push('Date of birth is required.');
-  //   }
-
-  //   if (this.registerModel.Password.trim() === '') {
-  //     errors.push('Password is required.');
-  //   }
-
-  //   if (this.registerModel.ConfirmPassword.trim() === '') {
-  //     errors.push('Confirm password is required.');
-  //   }
-
-  //   if (this.registerModel.Password !== this.registerModel.ConfirmPassword) {
-  //     errors.push('Passwords do not match.');
-  //   }
-
-  //   this.errorMessage.set(errors.length > 0 ? errors : null);
-  //   return errors.length === 0;
-  // }
 }
