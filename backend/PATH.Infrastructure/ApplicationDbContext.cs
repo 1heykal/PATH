@@ -117,6 +117,10 @@ namespace PATH.Infrastructure
                 .HasIndex(pm => new { pm.UserId, pm.ProjectId })
                 .IsUnique();
 
+            modelBuilder.Entity<OrganizationMember>()
+                .HasIndex(om => new { om.UserId, om.OrganizationId })
+                .IsUnique();
+
 
             base.OnModelCreating(modelBuilder);
         }
