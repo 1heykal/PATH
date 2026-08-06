@@ -1,4 +1,5 @@
-﻿using PATH.Application.Exceptions;
+﻿using Moq;
+using PATH.Application.Exceptions;
 using PATH.Domain.Entities;
 using PATH.Domain.Models;
 using PATH.Infrastructure;
@@ -35,7 +36,7 @@ namespace PATH.Tests.Tasks
             };
 
 
-            var taskService = new TaskService(context, new UserService(context));
+            var taskService = new TaskService(context, new UserService(context), new Mock<INotificationService>().Object);
 
             // Act
             var taskItem = await taskService.AddTaskItem(user.Id, taskModel);
@@ -69,7 +70,7 @@ namespace PATH.Tests.Tasks
                 Status = Status.Todo,
                 Priority = Priority.Medium
             };
-            var taskService = new TaskService(context, new UserService(context));
+            var taskService = new TaskService(context, new UserService(context), new Mock<INotificationService>().Object);
             // Act & Assert
             await Assert.ThrowsAsync<AppException>(() => taskService.AddTaskItem(user.Id, taskModel));
         }
@@ -96,7 +97,7 @@ namespace PATH.Tests.Tasks
 
 
 
-            var taskService = new TaskService(context, new UserService(context));
+            var taskService = new TaskService(context, new UserService(context), new Mock<INotificationService>().Object);
 
             // Act
             var assignTaskModel = new AssignTaskModel
@@ -132,7 +133,7 @@ namespace PATH.Tests.Tasks
 
 
 
-            var taskService = new TaskService(context, new UserService(context));
+            var taskService = new TaskService(context, new UserService(context), new Mock<INotificationService>().Object);
 
             // Act
             // Assert
@@ -157,7 +158,7 @@ namespace PATH.Tests.Tasks
             await context.SaveChangesAsync();
 
             // Act
-            var taskService = new TaskService(context, new UserService(context));
+            var taskService = new TaskService(context, new UserService(context), new Mock<INotificationService>().Object);
             await taskService.UpdateTaskStatus(user.Id, task.Id, Status.InProgress);
             // Assert
             Assert.Equal(Status.InProgress, task.Status);
@@ -182,7 +183,7 @@ namespace PATH.Tests.Tasks
             var anotherProjectMember = await CreateProjectMember(context, anotherUser.Id, project.Id);
             await context.SaveChangesAsync();
             // Act
-            var taskService = new TaskService(context, new UserService(context));
+            var taskService = new TaskService(context, new UserService(context), new Mock<INotificationService>().Object);
             // Assert
             await Assert.ThrowsAsync<AppException>(() => taskService.UpdateTaskStatus(anotherUser.Id, task.Id, Status.InProgress));
 
@@ -201,7 +202,7 @@ namespace PATH.Tests.Tasks
             var task = await CreateTask(context, user.Id, project.Id);
             await context.SaveChangesAsync();
 
-            var taskService = new TaskService(context, new UserService(context));
+            var taskService = new TaskService(context, new UserService(context), new Mock<INotificationService>().Object);
             context.ChangeTracker.Clear();
 
             // Act
@@ -230,7 +231,7 @@ namespace PATH.Tests.Tasks
             var anotherOrganizationMember = await CreateOrganizationMember(context, anotherUser.Id, organization.Id, OrganizationRole.Member);
             await context.SaveChangesAsync();
 
-            var taskService = new TaskService(context, new UserService(context));
+            var taskService = new TaskService(context, new UserService(context), new Mock<INotificationService>().Object);
             context.ChangeTracker.Clear();
 
             // Act & Assert

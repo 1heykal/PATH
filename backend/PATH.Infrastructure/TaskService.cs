@@ -12,12 +12,14 @@ namespace PATH.Infrastructure
     {
         private readonly ApplicationDbContext _context;
         private readonly UserService _userService;
+        private readonly INotificationService _notificationService;
 
 
-        public TaskService(ApplicationDbContext context, UserService userService)
+        public TaskService(ApplicationDbContext context, UserService userService, INotificationService notificationService)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
             _userService = userService ?? throw new ArgumentNullException(nameof(userService));
+            _notificationService = notificationService ?? throw new ArgumentNullException(nameof(notificationService));
         }
 
         public async Task<GetTaskItemResponse> AddTaskItem(Guid authorId, AddTaskModel model)
@@ -53,7 +55,9 @@ namespace PATH.Infrastructure
             var taskItem = await _context.TaskItems.FindAsync(taskId);
 
             taskItem!.AssignedToId = model.AssignedToId;
-            await _context.SaveChangesAsync();
+            var count = await _context.SaveChangesAsync();
+            if (count > 0)
+                await _notificationService.SendTaskAssignedNotification(model.AssignedToId, taskItem.Title, $"{authorOrgMembership.User.FirstName} {authorOrgMembership.User.LastName}");
         }
 
         public async Task DeleteTask(Guid authorId, Guid taskId)

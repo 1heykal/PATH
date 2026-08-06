@@ -71,17 +71,20 @@ namespace PATH.Infrastructure
                 .HasForeignKey(t => t.AssignedToId)
                 .OnDelete(DeleteBehavior.NoAction);
 
+
+            modelBuilder.Entity<TaskItem>()
+              .HasOne(t => t.Project)
+              .WithMany(p => p.Tasks)
+              .HasForeignKey(t => t.ProjectId)
+              .OnDelete(DeleteBehavior.NoAction);
+
             modelBuilder.Entity<Project>()
                 .HasOne(p => p.CreatedBy)
                 .WithMany(u => u.CreatedProjects)
                 .HasForeignKey(p => p.CreatedById)
                 .OnDelete(DeleteBehavior.NoAction);
 
-            modelBuilder.Entity<TaskItem>()
-                .HasOne(t => t.Project)
-                .WithMany(p => p.Tasks)
-                .HasForeignKey(t => t.ProjectId)
-                .OnDelete(DeleteBehavior.NoAction);
+
 
             modelBuilder.Entity<ProjectMember>()
                 .HasOne(p => p.Project)
